@@ -159,9 +159,9 @@ class _AnalogClockState extends State<AnalogClock> {
             ),
             Center(
               child: CircleProgressSecond(
-                radius: 172.0,
+                radius: 125.0,
                 dotColor: Colors.pink,
-                dotRadius: 12.0,
+                dotRadius: 5.0,
                 shadowWidth: 3.0,
                 progress: _secondPercent(),
                 progressChanged: (value) {

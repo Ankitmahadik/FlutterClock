@@ -7,7 +7,7 @@ class LinesPainter extends CustomPainter {
   final Paint linePainter;
 
   final double lineHeight = 8;
-  final int maxLines = 30;
+  final int maxLines = 60;
 
   LinesPainter()
       : linePainter = Paint()
@@ -24,7 +24,8 @@ class LinesPainter extends CustomPainter {
     final radius = size.width / 2;
 
     List.generate(maxLines, (i) {
-      canvas.drawLine(Offset(0, radius), Offset(0, radius - 8), linePainter);
+      var newRadius = (i % 5 == 0) ? radius - 15 : radius - 5;
+      canvas.drawLine(Offset(0, radius), Offset(0, newRadius), linePainter);
       canvas.rotate(2 * pi / maxLines);
     });
 

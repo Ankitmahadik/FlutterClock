@@ -14,15 +14,15 @@ class TimeLinesPainter extends CustomPainter {
       : linePainter = Paint()
           ..color = Colors.redAccent
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.5,
+          ..strokeWidth = 2.9,
         minutePainter = Paint()
           ..color = Colors.black38
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 3.5,
+          ..strokeWidth = 4.2,
         hourPainter = Paint()
           ..color = Colors.black
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 4.5;
+          ..strokeWidth = 5.2;
 
   @override
   void paint(Canvas canvas, Size size) {

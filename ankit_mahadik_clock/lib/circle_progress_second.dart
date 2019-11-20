@@ -28,7 +28,7 @@ class CircleProgressSecond extends StatefulWidget {
     this.shadowWidth = 2.0,
     this.shadowColor = Colors.black12,
     this.ringColor = const Color(0XFFFFFF),
-    this.dotEdgeColor = const Color(0XFFF5F5FA),
+    this.dotEdgeColor =   Colors.white,
     this.progress,
     this.progressChanged,
   }) : super(key: key);
