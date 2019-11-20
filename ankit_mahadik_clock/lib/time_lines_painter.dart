@@ -3,16 +3,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class TimeLinesPainter extends CustomPainter{
-
+class TimeLinesPainter extends CustomPainter {
   final Paint linePainter;
   final Paint hourPainter;
   final Paint minutePainter;
   final double tick;
   final LineType lineType;
 
-  TimeLinesPainter({this.tick, this.lineType}):
-        linePainter = Paint()
+  TimeLinesPainter({this.tick, this.lineType})
+      : linePainter = Paint()
           ..color = Colors.redAccent
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2.5,
@@ -31,17 +30,17 @@ class TimeLinesPainter extends CustomPainter{
 
     canvas.translate(radius, radius);
 
-    switch(lineType){
+    switch (lineType) {
       case LineType.hour:
-        canvas.rotate(2 * pi * tick );
+        canvas.rotate(2 * pi * tick);
         canvas.drawPath(_hourPath(radius), hourPainter);
         break;
       case LineType.minute:
-        canvas.rotate(2 * pi * tick );
+        canvas.rotate(2 * pi * tick);
         canvas.drawPath(_minutePath(radius), minutePainter);
         break;
       case LineType.second:
-        canvas.rotate(2 * pi * tick );
+        canvas.rotate(2 * pi * tick);
         canvas.drawPath(_secondPath(radius), linePainter);
         canvas.drawShadow(_secondPath(radius), Colors.black26, 100, true);
 

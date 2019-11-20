@@ -27,7 +27,7 @@ class CircleProgressSecond extends StatefulWidget {
     @required this.dotColor,
     this.shadowWidth = 2.0,
     this.shadowColor = Colors.black12,
-    this.ringColor = const Color(0XFFF7F7FC),
+    this.ringColor = const Color(0XFFFFFF),
     this.dotEdgeColor = const Color(0XFFF5F5FA),
     this.progress,
     this.progressChanged,
@@ -71,73 +71,24 @@ class _CircleProgressState extends State<CircleProgressSecond>
   Widget build(BuildContext context) {
     final double width = widget.radius * 2.0;
     final size = new Size(width, width);
-    return GestureDetector(
-      onPanStart: _onPanStart,
-      onPanUpdate: _onPanUpdate,
-      onPanEnd: _onPanEnd,
-      child: Container(
-        alignment: FractionalOffset.center,
-        child: CustomPaint(
-          key: paintKey,
-          size: size,
-          painter: ProgressPainter(
-              dotRadius: widget.dotRadius,
-              shadowWidth: widget.shadowWidth,
-              shadowColor: widget.shadowColor,
-              ringColor: widget.ringColor,
-              dotColor: widget.dotColor,
-              dotEdgeColor: widget.dotEdgeColor,
-              progress: progressController.value),
-        ),
+    return Container(
+      alignment: FractionalOffset.center,
+      child: CustomPaint(
+        key: paintKey,
+        size: size,
+        painter: ProgressPainter(
+            dotRadius: widget.dotRadius,
+            shadowWidth: widget.shadowWidth,
+            shadowColor: widget.shadowColor,
+            ringColor: widget.ringColor,
+            dotColor: widget.dotColor,
+            dotEdgeColor: widget.dotEdgeColor,
+            progress: progressController.value),
       ),
     );
   }
 
-  void _onPanStart(DragStartDetails details) {
-    RenderBox getBox = paintKey.currentContext.findRenderObject();
-    Offset local = getBox.globalToLocal(details.globalPosition);
-    isValidTouch = _checkValidTouch(local);
-    if (!isValidTouch) {
-      return;
-    }
-  }
 
-  void _onPanUpdate(DragUpdateDetails details) {
-    if (!isValidTouch) {
-      return;
-    }
-    RenderBox getBox = paintKey.currentContext.findRenderObject();
-    Offset local = getBox.globalToLocal(details.globalPosition);
-    final double x = local.dx;
-    final double y = local.dy;
-    final double center = widget.radius;
-    double radians = atan((x - center) / (center - y));
-    if (y > center) {
-      radians = radians + degToRad(180.0);
-    } else if (x < center) {
-      radians = radians + degToRad(360.0);
-    }
-    progressController.value = radians / degToRad(360.0);
-  }
-
-  void _onPanEnd(DragEndDetails details) {
-    if (!isValidTouch) {
-      return;
-    }
-  }
-
-  bool _checkValidTouch(Offset pointer) {
-    final double validInnerRadius = widget.radius - widget.dotRadius * 3;
-    final double dx = pointer.dx;
-    final double dy = pointer.dy;
-    final double distanceToCenter =
-    sqrt(pow(dx - widget.radius, 2) + pow(dy - widget.radius, 2));
-    if (distanceToCenter < validInnerRadius ||
-        distanceToCenter > widget.radius) {
-      return false;
-    }
-    return true;
-  }
 }
 
 class ProgressPainter extends CustomPainter {
@@ -171,12 +122,6 @@ class ProgressPainter extends CustomPainter {
     final double outerRadius = center - radiusOffset;
     final double innerRadius = center - dotRadius * 2 + radiusOffset;
 
-    // draw shadow.
-    final shadowPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..color = shadowColor
-      ..strokeWidth = shadowWidth
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, shadowWidth);
 
     Path path = Path.combine(PathOperation.difference, Path()..addOval(Rect.fromCircle(center: offsetCenter, radius: outerRadius)), Path()..addOval(Rect.fromCircle(center: offsetCenter, radius: innerRadius)));
     canvas.drawShadow(path, shadowColor, 4.0, true);
