@@ -28,7 +28,7 @@ class CircleProgressSecond extends StatefulWidget {
     this.shadowWidth = 2.0,
     this.shadowColor = Colors.black12,
     this.ringColor = const Color(0XFFFFFF),
-    this.dotEdgeColor =   Colors.white,
+    this.dotEdgeColor = Colors.white,
     this.progress,
     this.progressChanged,
   }) : super(key: key);
@@ -55,12 +55,14 @@ class _CircleProgressState extends State<CircleProgressSecond>
       setState(() {});
     });
   }
+
   @override
   void didUpdateWidget(CircleProgressSecond oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     if (widget.progress != null) progressController.value = widget.progress;
   }
+
   @override
   void dispose() {
     progressController.dispose();
@@ -87,8 +89,6 @@ class _CircleProgressState extends State<CircleProgressSecond>
       ),
     );
   }
-
-
 }
 
 class ProgressPainter extends CustomPainter {
@@ -122,8 +122,13 @@ class ProgressPainter extends CustomPainter {
     final double outerRadius = center - radiusOffset;
     final double innerRadius = center - dotRadius * 2 + radiusOffset;
 
-
-    Path path = Path.combine(PathOperation.difference, Path()..addOval(Rect.fromCircle(center: offsetCenter, radius: outerRadius)), Path()..addOval(Rect.fromCircle(center: offsetCenter, radius: innerRadius)));
+    Path path = Path.combine(
+        PathOperation.difference,
+        Path()
+          ..addOval(Rect.fromCircle(center: offsetCenter, radius: outerRadius)),
+        Path()
+          ..addOval(
+              Rect.fromCircle(center: offsetCenter, radius: innerRadius)));
     canvas.drawShadow(path, shadowColor, 4.0, true);
 
     // draw ring.
@@ -152,14 +157,13 @@ class ProgressPainter extends CustomPainter {
           ],
         );
         final Rect arcRect =
-        Rect.fromCircle(center: offsetCenter, radius: drawRadius);
+            Rect.fromCircle(center: offsetCenter, radius: drawRadius);
         final progressPaint = Paint()
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
           ..strokeWidth = progressWidth
           ..shader = gradient.createShader(arcRect);
-        canvas.drawArc(
-            arcRect, offset, radians - offset, false, progressPaint);
+        canvas.drawArc(arcRect, offset, radians - offset, false, progressPaint);
         canvas.restore();
       }
     }
@@ -174,7 +178,6 @@ class ProgressPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = dotRadius * 0.3;
     canvas.drawCircle(new Offset(dx, dy), dotRadius, dotPaint);
-
   }
 
   @override

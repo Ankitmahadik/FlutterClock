@@ -7,6 +7,7 @@ class TimeLinesPainter extends CustomPainter {
   final Paint linePainter;
   final Paint hourPainter;
   final Paint minutePainter;
+  final Paint centerPainter;
   final double tick;
   final LineType lineType;
 
@@ -22,7 +23,11 @@ class TimeLinesPainter extends CustomPainter {
         hourPainter = Paint()
           ..color = Colors.black
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 5.2;
+          ..strokeWidth = 5.2,
+        centerPainter = Paint()
+          ..color = Colors.redAccent
+          ..style = PaintingStyle.fill
+          ..strokeWidth = 2.9;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -42,27 +47,27 @@ class TimeLinesPainter extends CustomPainter {
       case LineType.second:
         canvas.rotate(2 * pi * tick);
         canvas.drawPath(_secondPath(radius), linePainter);
+        canvas.drawCircle(Offset(0.0, 0.0), radius / 20, centerPainter);
         canvas.drawShadow(_secondPath(radius), Colors.black26, 100, true);
-
         break;
     }
   }
 
-  Path _hourPath(double radius){
+  Path _hourPath(double radius) {
     return Path()
-      ..lineTo(0, -((radius/1.4)/2))
+      ..lineTo(0, -((radius / 1.4) / 2))
       ..close();
   }
 
-  Path _minutePath(double radius){
+  Path _minutePath(double radius) {
     return Path()
-      ..lineTo(0, -(radius/1.4))
+      ..lineTo(0, -(radius / 1.4))
       ..close();
   }
 
-  Path _secondPath(double radius){
+  Path _secondPath(double radius) {
     return Path()
-      ..lineTo(0, -(radius+10))
+      ..lineTo(0, -(radius + 10))
       ..close();
   }
 
@@ -70,4 +75,4 @@ class TimeLinesPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-enum LineType{ hour, minute, second }
+enum LineType { hour, minute, second }

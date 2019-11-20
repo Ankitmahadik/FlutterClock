@@ -37,7 +37,7 @@ class _AnalogClockState extends State<AnalogClock> {
   Timer _timer;
   final Color bgColor = Colors.white;
 
-  double _secondPercent() => _now.second/60;
+  double _secondPercent() => _now.second / 60;
 
   double _minutesPercent() => _now.minute / 60;
 
