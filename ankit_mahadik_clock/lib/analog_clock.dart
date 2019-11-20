@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ankit_mahadik_clock/circle_progress_second.dart';
 import 'package:ankit_mahadik_clock/lines_painter.dart';
 import 'package:ankit_mahadik_clock/time_lines_painter.dart';
 import 'package:flutter_clock_helper/model.dart';
@@ -36,7 +37,7 @@ class _AnalogClockState extends State<AnalogClock> {
   Timer _timer;
   final Color bgColor = Colors.white;
 
-  double _secondPercent() => _now.second / 60;
+  double _secondPercent() => _now.second/60;
 
   double _minutesPercent() => _now.minute / 60;
 
@@ -81,7 +82,7 @@ class _AnalogClockState extends State<AnalogClock> {
       _now = DateTime.now();
       // Update once per second. Make sure to do it at the beginning of each
       // new second, so that the clock is accurate.
-      print("Time...${_now}");
+
       _timer = Timer(
         Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
@@ -99,60 +100,78 @@ class _AnalogClockState extends State<AnalogClock> {
         value: time,
       ),
       child: Container(
-        child: Center(
-          child: Container(
-              height: 310,
-              width: 310,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black26.withOpacity(0.04),
-                        blurRadius: 10,
-                        offset: Offset(-12, 0),
-                        spreadRadius: 2),
-                    BoxShadow(
-                        color: Colors.black26.withOpacity(0.04),
-                        blurRadius: 10,
-                        offset: Offset(12, 0),
-                        spreadRadius: 5),
-                  ]),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CustomPaint(
-                  painter: LinesPainter(),
-                  child: Container(
-                    margin: const EdgeInsets.all(32.0),
-                    decoration: BoxDecoration(
-                        color: bgColor,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black26.withOpacity(0.03),
-                              blurRadius: 5,
-                              spreadRadius: 8),
-                        ]),
+        child: Stack(
+          children: <Widget>[
+            Center(
+              child: Container(
+                  height: 310,
+                  width: 310,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black26.withOpacity(0.04),
+                            blurRadius: 10,
+                            offset: Offset(-12, 0),
+                            spreadRadius: 2),
+                        BoxShadow(
+                            color: Colors.black26.withOpacity(0.04),
+                            blurRadius: 10,
+                            offset: Offset(12, 0),
+                            spreadRadius: 5),
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: CustomPaint(
-                      painter: TimeLinesPainter(
-                        lineType: LineType.minute,
-                        tick: _minutesPercent(),
-                      ),
-                      child: CustomPaint(
-                        painter: TimeLinesPainter(
-                          lineType: LineType.hour,
-                          tick: _hoursPercent(),
-                        ),
+                      painter: LinesPainter(),
+                      child: Container(
+                        margin: const EdgeInsets.all(32.0),
+                        decoration: BoxDecoration(
+                            color: bgColor,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black26.withOpacity(0.03),
+                                  blurRadius: 5,
+                                  spreadRadius: 8),
+                            ]),
                         child: CustomPaint(
                           painter: TimeLinesPainter(
-                              lineType: LineType.second,
-                              tick: _secondPercent()),
+                            lineType: LineType.minute,
+                            tick: _minutesPercent(),
+                          ),
+                          child: CustomPaint(
+                            painter: TimeLinesPainter(
+                              lineType: LineType.hour,
+                              tick: _hoursPercent(),
+                            ),
+                            child: CustomPaint(
+                              painter: TimeLinesPainter(
+                                  lineType: LineType.second,
+                                  tick: _secondPercent()),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              )),
+                  )),
+            ),
+            Center(
+              child: CircleProgressSecond(
+                radius: 172.0,
+                dotColor: Colors.pink,
+                dotRadius: 12.0,
+                shadowWidth: 3.0,
+                progress: _secondPercent(),
+                progressChanged: (value) {
+                  setState(() {
+                    print("Progress...$value");
+                  });
+                },
+              ),
+            )
+          ],
         ),
       ),
     );
