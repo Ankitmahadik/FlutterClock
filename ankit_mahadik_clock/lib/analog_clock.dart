@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:ankit_mahadik_clock/circle_progress_second.dart';
 import 'package:ankit_mahadik_clock/lines_painter.dart';
 import 'package:ankit_mahadik_clock/time_lines_painter.dart';
+import 'package:ankit_mahadik_clock/utils.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -35,7 +37,9 @@ class _AnalogClockState extends State<AnalogClock> {
   var _condition = '';
   var _location = '';
   Timer _timer;
+
   final Color bgColor = Colors.white;
+  Color currentColor = Color(0xff5733);
 
   double _secondPercent() => _now.second / 60;
 
@@ -82,7 +86,7 @@ class _AnalogClockState extends State<AnalogClock> {
       _now = DateTime.now();
       // Update once per second. Make sure to do it at the beginning of each
       // new second, so that the clock is accurate.
-
+      currentColor = Utils().getColorsArray()[Random().nextInt(Utils().getColorsArray().length)];
       _timer = Timer(
         Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
@@ -148,8 +152,9 @@ class _AnalogClockState extends State<AnalogClock> {
                             ),
                             child: CustomPaint(
                               painter: TimeLinesPainter(
-                                  lineType: LineType.second,
-                                  tick: _secondPercent()),
+                                lineType: LineType.second,
+                                tick: _secondPercent(),
+                              ),
                             ),
                           ),
                         ),
@@ -160,7 +165,7 @@ class _AnalogClockState extends State<AnalogClock> {
             Center(
               child: CircleProgressSecond(
                 radius: 125.0,
-                dotColor: Colors.pink,
+                dotColor: currentColor,
                 dotRadius: 5.0,
                 shadowWidth: 3.0,
                 progress: _secondPercent(),

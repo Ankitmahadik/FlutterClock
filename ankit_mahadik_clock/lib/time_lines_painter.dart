@@ -11,7 +11,7 @@ class TimeLinesPainter extends CustomPainter {
   final double tick;
   final LineType lineType;
 
-  TimeLinesPainter({this.tick, this.lineType})
+  TimeLinesPainter({this.tick, this.lineType })
       : linePainter = Paint()
           ..color = Colors.redAccent
           ..style = PaintingStyle.stroke
@@ -44,7 +44,7 @@ class TimeLinesPainter extends CustomPainter {
       case LineType.minute:
         canvas.rotate(2 * pi * tick);
         canvas.drawPath(_minutePath(radius), minutePainter);
-        canvas.drawShadow(_minutePath(radius), Colors.black,6.0, false);
+        canvas.drawShadow(_minutePath(radius), Colors.black, 6.0, false);
         break;
       case LineType.second:
         canvas.rotate(2 * pi * tick);
@@ -57,23 +57,23 @@ class TimeLinesPainter extends CustomPainter {
 
   Path _hourPath(double radius) {
     return Path()
-      ..moveTo(-1.5, -radius /1.8)
+      ..moveTo(-1.5, -radius / 1.8)
       ..lineTo(-4, -radius / 3.6)
       ..lineTo(-2.0, 5.0)
       ..lineTo(2.0, 5.0)
-      ..lineTo(4, -radius /3.6)
-      ..lineTo(1.5, -radius /1.8)
+      ..lineTo(4, -radius / 3.6)
+      ..lineTo(1.5, -radius / 1.8)
       ..close();
   }
 
   Path _minutePath(double radius) {
     return Path()
-      ..moveTo(-1.5, -radius/1.2)
+      ..moveTo(-1.5, -radius / 1.2)
       ..lineTo(-3.5, -radius / 3.2)
       ..lineTo(-2.0, 5.0)
       ..lineTo(2.0, 5.0)
       ..lineTo(3.5, -radius / 3.2)
-      ..lineTo(1.5, -radius /1.2)
+      ..lineTo(1.5, -radius / 1.2)
       ..close();
   }
 
