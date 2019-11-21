@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class LinesPainter extends CustomPainter {
-  final Paint linePainter;
-
   final double lineHeight = 8;
   final int maxLines = 60;
-
-  LinesPainter()
+  final Color currentColor;
+  final Paint linePainter;
+  LinesPainter(this.currentColor)
       : linePainter = Paint()
           ..color = Colors.redAccent
           ..style = PaintingStyle.stroke
@@ -20,7 +19,7 @@ class LinesPainter extends CustomPainter {
     canvas.translate(size.width / 2, size.height / 2);
 
     canvas.save();
-
+ linePainter.color = currentColor;
     final radius = size.width / 2;
 
     List.generate(maxLines, (i) {

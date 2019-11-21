@@ -128,7 +128,7 @@ class _AnalogClockState extends State<AnalogClock> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CustomPaint(
-                      painter: LinesPainter(),
+                      painter: LinesPainter(currentColor),
                       child: Container(
                         margin: const EdgeInsets.all(32.0),
                         decoration: BoxDecoration(
