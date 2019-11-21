@@ -85,8 +85,8 @@ class _AnalogClockState extends State<AnalogClock> {
     setState(() {
       _now = DateTime.now();
       // Update once per second. Make sure to do it at the beginning of each
-      // new second, so that the clock is accurate.
-      currentColor = Utils().getColorsArray()[Random().nextInt(Utils().getColorsArray().length)];
+      // new second, so that the clock is accurate
+      currentColor = Utils().getColorsArray()[_now.second.toInt()];
       _timer = Timer(
         Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
@@ -169,11 +169,7 @@ class _AnalogClockState extends State<AnalogClock> {
                 dotRadius: 5.0,
                 shadowWidth: 3.0,
                 progress: _secondPercent(),
-                progressChanged: (value) {
-                  setState(() {
-                    print("Progress...$value");
-                  });
-                },
+
               ),
             )
           ],
