@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:ankit_mahadik_clock/circle_progress_second.dart';
 import 'package:ankit_mahadik_clock/lines_painter.dart';
+import 'package:ankit_mahadik_clock/second_hand.dart';
 import 'package:ankit_mahadik_clock/time_lines_painter.dart';
 import 'package:ankit_mahadik_clock/utils.dart';
 import 'package:flutter_clock_helper/model.dart';
@@ -37,7 +38,7 @@ class _AnalogClockState extends State<AnalogClock> {
   var _condition = '';
   var _location = '';
   Timer _timer;
-
+  double prevTick = 0.0;
   final Color bgColor = Colors.white;
   Color currentColor = Color(0xff5733);
 
@@ -83,6 +84,7 @@ class _AnalogClockState extends State<AnalogClock> {
 
   void _updateTime() {
     setState(() {
+      prevTick =_secondPercent();
       _now = DateTime.now();
       currentColor = Utils().getColorsArray()[_now.minute.toInt()];
       _timer = Timer(
@@ -140,20 +142,15 @@ class _AnalogClockState extends State<AnalogClock> {
                             ]),
                         child: CustomPaint(
                           painter: TimeLinesPainter(
-                            lineType: LineType.minute,
-                            tick: _minutesPercent(),
+                            lineType: LineType.hour,
+                            tick: _hoursPercent(),
                           ),
                           child: CustomPaint(
                             painter: TimeLinesPainter(
-                              lineType: LineType.hour,
-                              tick: _hoursPercent(),
+                              lineType: LineType.minute,
+                              tick: _minutesPercent(),
                             ),
-                            child: CustomPaint(
-                              painter: TimeLinesPainter(
-                                lineType: LineType.second,
-                                tick: _secondPercent(),
-                              ),
-                            ),
+                            child: SecondHand(currentTick: _secondPercent(),prevTick:prevTick),
                           ),
                         ),
                       ),
@@ -167,7 +164,6 @@ class _AnalogClockState extends State<AnalogClock> {
                 dotRadius: 5.0,
                 shadowWidth: 3.0,
                 progress: _secondPercent(),
-
               ),
             )
           ],

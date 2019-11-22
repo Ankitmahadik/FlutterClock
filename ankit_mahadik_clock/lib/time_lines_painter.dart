@@ -11,7 +11,7 @@ class TimeLinesPainter extends CustomPainter {
   final double tick;
   final LineType lineType;
 
-  TimeLinesPainter({this.tick, this.lineType })
+  TimeLinesPainter({this.tick, this.lineType})
       : linePainter = Paint()
           ..color = Colors.redAccent
           ..style = PaintingStyle.stroke
