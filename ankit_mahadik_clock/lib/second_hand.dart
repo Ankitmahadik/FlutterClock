@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class SecondHand extends StatefulWidget {
   final double currentTick;
-  final double prevTick;
+  double prevTick;
 
   SecondHand({this.currentTick, this.prevTick});
 
@@ -16,6 +16,7 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
   double _progress;
   Animation<double> _animation;
   AnimationController _controller;
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +44,10 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
         .animate(_controller)
           ..addListener(() {
             setState(() {
+              if (DateTime.now().second == 0) {
+                print(
+                    "_animation.value..${_animation.value}...${widget.prevTick}.....${widget.currentTick}");
+              }
               _progress = _animation.value;
             });
           });
@@ -73,8 +78,8 @@ class LinePainter extends CustomPainter {
     canvas.rotate(progress);
     canvas.drawCircle(Offset(0.0, 0.0), radius / 20, _centerPainter);
     canvas.drawPath(_secondPath(radius), _paint);
-    _centerPainter.color =Colors.redAccent;
-    canvas.drawCircle(Offset(0.0, 0.0), radius / 40, _centerPainter);
+    _centerPainter.color = Colors.redAccent;
+    canvas.drawCircle(Offset(0.0, 0.0), radius / 30, _centerPainter);
   }
 
   @override
@@ -84,7 +89,8 @@ class LinePainter extends CustomPainter {
 
   Path _secondPath(double radius) {
     return Path()
-      ..lineTo(0, -(radius))
+      ..moveTo(0.0, radius - (radius / 1.2))
+      ..lineTo(0.0, -(radius))
       ..close();
   }
 }

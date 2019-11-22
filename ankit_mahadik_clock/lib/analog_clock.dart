@@ -84,7 +84,7 @@ class _AnalogClockState extends State<AnalogClock> {
 
   void _updateTime() {
     setState(() {
-      prevTick =_secondPercent();
+      prevTick = _secondPercent();
       _now = DateTime.now();
       currentColor = Utils().getColorsArray()[_now.minute.toInt()];
       _timer = Timer(
@@ -150,7 +150,9 @@ class _AnalogClockState extends State<AnalogClock> {
                               lineType: LineType.minute,
                               tick: _minutesPercent(),
                             ),
-                            child: SecondHand(currentTick: _secondPercent(),prevTick:prevTick),
+                            child: SecondHand(
+                                currentTick: _secondPercent(),
+                                prevTick: prevTick),
                           ),
                         ),
                       ),
@@ -162,8 +164,9 @@ class _AnalogClockState extends State<AnalogClock> {
                 radius: 125.0,
                 dotColor: currentColor,
                 dotRadius: 5.0,
-                shadowWidth: 3.0,
+                shadowWidth: 8.0,
                 progress: _secondPercent(),
+                prevProgress: prevTick,
               ),
             )
           ],

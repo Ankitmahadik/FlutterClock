@@ -11,6 +11,8 @@ num radToDeg(num rad) => rad * (180.0 / pi);
 class CircleProgressSecond extends StatefulWidget {
   final double radius;
   final double progress;
+  final double prevProgress;
+
   final double dotRadius;
   final double shadowWidth;
   final Color shadowColor;
@@ -20,47 +22,41 @@ class CircleProgressSecond extends StatefulWidget {
 
   final ProgressChanged progressChanged;
 
-  const CircleProgressSecond({
-    Key key,
-    @required this.radius,
-    @required this.dotRadius,
-    @required this.dotColor,
-    this.shadowWidth = 2.0,
-    this.shadowColor = Colors.black12,
-    this.ringColor = const Color(0XFFFFFF),
-    this.dotEdgeColor = Colors.white,
-    this.progress,
-    this.progressChanged,
-  }) : super(key: key);
+  const CircleProgressSecond(
+      {Key key,
+      @required this.radius,
+      @required this.dotRadius,
+      @required this.dotColor,
+      this.shadowWidth = 2.0,
+      this.shadowColor = Colors.black12,
+      this.ringColor = const Color(0XFFFFFF),
+      this.dotEdgeColor = Colors.white,
+      this.progress,
+      this.progressChanged,
+      this.prevProgress})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CircleProgressState();
 }
 
 class _CircleProgressState extends State<CircleProgressSecond>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   AnimationController progressController;
+  Animation<double> _animation;
   bool isValidTouch = false;
   final GlobalKey paintKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    progressController =
-        AnimationController(duration: Duration(milliseconds: 300), vsync: this);
-    if (widget.progress != null) progressController.value = widget.progress;
-    progressController.addListener(() {
-      if (widget.progressChanged != null)
-        widget.progressChanged(progressController.value);
-      setState(() {});
-    });
+    animate();
   }
 
   @override
   void didUpdateWidget(CircleProgressSecond oldWidget) {
-    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    if (widget.progress != null) progressController.value = widget.progress;
+    animate();
   }
 
   @override
@@ -85,9 +81,22 @@ class _CircleProgressState extends State<CircleProgressSecond>
             ringColor: widget.ringColor,
             dotColor: widget.dotColor,
             dotEdgeColor: widget.dotEdgeColor,
-            progress: progressController.value),
+            progress: _animation.value),
       ),
     );
+  }
+
+  void animate() {
+    progressController = AnimationController(
+        duration: Duration(milliseconds: 1000), vsync: this);
+    if (widget.progress != null) {
+      _animation = Tween(begin: widget.prevProgress, end: widget.progress)
+          .animate(progressController)
+            ..addListener(() {
+              setState(() {});
+            });
+      progressController.forward();
+    }
   }
 }
 
