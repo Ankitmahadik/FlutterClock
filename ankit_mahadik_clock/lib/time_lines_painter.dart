@@ -50,7 +50,6 @@ class TimeLinesPainter extends CustomPainter {
         canvas.rotate(2 * pi * tick);
         canvas.drawPath(_secondPath(radius), linePainter);
         canvas.drawCircle(Offset(0.0, 0.0), radius / 20, centerPainter);
-        canvas.drawShadow(_secondPath(radius), Colors.black26, 100, true);
         break;
     }
   }
