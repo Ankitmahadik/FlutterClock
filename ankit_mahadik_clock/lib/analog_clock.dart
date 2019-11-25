@@ -96,14 +96,9 @@ class _AnalogClockState extends State<AnalogClock> {
 
   @override
   Widget build(BuildContext context) {
-    final time = DateFormat.Hms().format(DateTime.now());
-
-    return Semantics.fromProperties(
-      properties: SemanticsProperties(
-        label: 'Analog clock with time $time',
-        value: time,
-      ),
-      child: Container(
+    return Container(
+      child: GestureDetector(
+        onTap: () {},
         child: Stack(
           children: <Widget>[
             Center(
