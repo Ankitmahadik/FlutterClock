@@ -90,8 +90,17 @@ class _CircleProgressState extends State<CircleProgressSecond>
     progressController = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
     if (widget.progress != null) {
-      _animation = Tween(begin: widget.prevProgress, end: widget.progress)
-          .animate(progressController)
+      //Extra value added to match speed
+      var beginPos = widget.prevProgress + 0.0167;
+      var endPos = widget.progress + 0.0167;
+      if (beginPos > endPos) {
+        //Extra value added to Switch last animation smoothly on minute change
+        beginPos = (beginPos > 1.0) ? 0.0 : beginPos;
+        endPos = (widget.prevProgress + 0.0167) + 0.016;
+        endPos = (endPos > 1.0) ? 0.0167 : endPos;
+      }
+      _animation =
+          Tween(begin: beginPos, end: endPos).animate(progressController)
             ..addListener(() {
               setState(() {});
             });
