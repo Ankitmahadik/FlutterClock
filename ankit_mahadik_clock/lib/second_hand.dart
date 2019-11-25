@@ -36,21 +36,19 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
   }
 
   void animateHand() {
+    var beginPos = (2 * pi * widget.prevTick);
+    var endPos = (2 * pi * widget.currentTick);
+    if (beginPos > endPos) {
+      endPos = (2 * pi * widget.prevTick) + 0.10;
+    }
     _controller = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
-    _animation = Tween(
-            begin: (2 * pi * widget.prevTick),
-            end: (2 * pi * widget.currentTick))
-        .animate(_controller)
-          ..addListener(() {
-            setState(() {
-              if (DateTime.now().second == 0) {
-                print(
-                    "_animation.value..${_animation.value}...${widget.prevTick}.....${widget.currentTick}");
-              }
-              _progress = _animation.value;
-            });
-          });
+    _animation = Tween(begin: beginPos, end: endPos).animate(_controller)
+      ..addListener(() {
+        setState(() {
+          _progress = _animation.value;
+        });
+      });
 
     _controller.forward();
   }
