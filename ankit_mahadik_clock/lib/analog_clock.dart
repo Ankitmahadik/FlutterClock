@@ -108,8 +108,8 @@ class _AnalogClockState extends State<AnalogClock> {
           children: <Widget>[
             Center(
               child: Container(
-                  height: 310,
-                  width: 310,
+                  height: 350,
+                  width: 350,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -161,7 +161,7 @@ class _AnalogClockState extends State<AnalogClock> {
             ),
             Center(
               child: CircleProgressSecond(
-                radius: 125.0,
+                radius: 137.0,
                 dotColor: currentColor,
                 dotRadius: 5.0,
                 shadowWidth: 8.0,
