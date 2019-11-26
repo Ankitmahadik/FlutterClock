@@ -13,11 +13,11 @@ class TimeLinesPainter extends CustomPainter {
 
   TimeLinesPainter({this.tick, this.lineType})
       : linePainter = Paint()
-          ..color = Colors.redAccent
+          ..color = Colors.black
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2.9,
         minutePainter = Paint()
-          ..color = Colors.black38
+          ..color = Colors.black
           ..style = PaintingStyle.fill
           ..strokeWidth = 4.2,
         hourPainter = Paint()
@@ -48,7 +48,7 @@ class TimeLinesPainter extends CustomPainter {
         break;
       case LineType.second:
         canvas.rotate(2 * pi * tick);
-        canvas.drawPath(_secondPath(radius), linePainter);
+        canvas.drawPath(_secondPath(radius), minutePainter);
         canvas.drawCircle(Offset(0.0, 0.0), radius / 20, centerPainter);
         break;
     }

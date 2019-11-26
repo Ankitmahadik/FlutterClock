@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:ankit_mahadik_clock/circle_progress_second.dart';
+import 'package:ankit_mahadik_clock/date_text_helper.dart';
 import 'package:ankit_mahadik_clock/lines_painter.dart';
 import 'package:ankit_mahadik_clock/second_hand.dart';
 import 'package:ankit_mahadik_clock/time_lines_painter.dart';
 import 'package:ankit_mahadik_clock/utils.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -48,9 +50,19 @@ class _AnalogClockState extends State<AnalogClock> {
 
   double _hoursPercent() => _now.hour / 12;
 
+  double _height = 0.0, _width = 0.0;
+
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      _height = MediaQuery.of(context).size.height;
+      _width = MediaQuery.of(context).size.width;
+    });
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     widget.model.addListener(_updateModel);
     // Set the initial values.
     _updateTime();
@@ -101,72 +113,128 @@ class _AnalogClockState extends State<AnalogClock> {
         onTap: () {},
         child: Stack(
           children: <Widget>[
-            Center(
-              child: Container(
-                  height: 350,
-                  width: 350,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black26.withOpacity(0.04),
-                            blurRadius: 10,
-                            offset: Offset(-12, 0),
-                            spreadRadius: 2),
-                        BoxShadow(
-                            color: Colors.black26.withOpacity(0.04),
-                            blurRadius: 10,
-                            offset: Offset(12, 0),
-                            spreadRadius: 5),
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CustomPaint(
-                      painter: LinesPainter(currentColor),
-                      child: Container(
-                        margin: const EdgeInsets.all(32.0),
-                        decoration: BoxDecoration(
-                            color: bgColor,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black26.withOpacity(0.03),
-                                  blurRadius: 5,
-                                  spreadRadius: 8),
-                            ]),
-                        child: CustomPaint(
-                          painter: TimeLinesPainter(
-                            lineType: LineType.hour,
-                            tick: _hoursPercent(),
-                          ),
-                          child: CustomPaint(
-                            painter: TimeLinesPainter(
-                              lineType: LineType.minute,
-                              tick: _minutesPercent(),
-                            ),
-                            child: SecondHand(
-                                currentTick: _secondPercent(),
-                                prevTick: prevTick),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )),
-            ),
-            Center(
-              child: CircleProgressSecond(
-                radius: 137.0,
-                dotColor: currentColor,
-                dotRadius: 5.0,
-                shadowWidth: 8.0,
-                progress: _secondPercent(),
-                prevProgress: prevTick,
-              ),
-            )
+            buildClockWidget(),
+            buildSecondProgressWidget(),
           ],
         ),
       ),
     );
   }
+  Widget _buildDateBorderWidget() {
+    return Positioned(
+      top: _width / 4.7 ,
+      left: _width / 2.5  ,
+      child: Container(
+        height: 90,
+        width:  90,
+        child: CustomPaint(painter:  LinesPainter (Colors.black38,DialLineType.date),)
+      ),
+    );
+  }
+  Widget _buildDateWidget() {
+    return Positioned(
+      top: _width / 4.5,
+      left: _width / 2.4  ,
+      child: Container(
+        height: 80,
+        width: 80,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(child: DateTextHelper(_getDate(),_getMonth())),
+        ),
+      ),
+    );
+  }
+
+  Widget buildSecondProgressWidget() {
+    return Center(
+      child: CircleProgressSecond(
+        radius: 137.0,
+        dotColor: currentColor,
+        dotRadius: 5.0,
+        shadowWidth: 8.0,
+        progress: _secondPercent(),
+        prevProgress: prevTick,
+      ),
+    );
+  }
+
+  Widget buildClockWidget() {
+    return Center(
+      child: Container(
+          height: 350,
+          width: 350,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black26.withOpacity(0.04),
+                    blurRadius: 10,
+                    offset: Offset(-12, 0),
+                    spreadRadius: 2),
+                BoxShadow(
+                    color: Colors.black26.withOpacity(0.04),
+                    blurRadius: 10,
+                    offset: Offset(12, 0),
+                    spreadRadius: 5),
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Container(
+                width: 350,
+                height: 350,
+                child: CustomPaint(
+                  painter: LinesPainter(currentColor,DialLineType.clock),
+                  child: Container(
+                    margin: const EdgeInsets.all(32.0),
+                    decoration: BoxDecoration(
+                        color: bgColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black26.withOpacity(0.03),
+                              blurRadius: 5,
+                              spreadRadius: 8),
+                        ]),
+                    child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      child: CustomPaint(
+                        painter: TimeLinesPainter(
+                          lineType: LineType.hour,
+                          tick: _hoursPercent(),
+                        ),
+                        child: CustomPaint(
+                            painter: TimeLinesPainter(
+                              lineType: LineType.minute,
+                              tick: _minutesPercent(),
+                            ),
+                            child: Stack(
+                              children: <Widget>[
+                                _buildDateBorderWidget(),
+                                _buildDateWidget(),
+                                Container(
+                                  width: 350,
+                                  height: 350,
+                                  child: SecondHand(
+                                      currentTick: _secondPercent(),
+                                      prevTick: prevTick),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )),
+    );
+  }
+
+  String _getDate() {return DateFormat("dd").format(DateTime.now());}
+
+  String _getMonth() {return DateFormat("MMM").format(DateTime.now());}
 }

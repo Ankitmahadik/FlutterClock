@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class SecondHand extends StatefulWidget {
   final double currentTick;
-  double prevTick;
+  final double prevTick;
 
   SecondHand({this.currentTick, this.prevTick});
 
@@ -41,7 +41,7 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
     var endPos = (2 * pi * widget.currentTick + 0.097);
     if (beginPos > endPos) {
       //Extra value added to Switch last animation smoothly on minute change
-      endPos = (2 * pi * widget.prevTick + 0.097) + 0.10;
+      endPos = (2 * pi * widget.prevTick + 0.097) + 0.1111;
     }
     _controller = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);

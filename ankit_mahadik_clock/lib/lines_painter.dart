@@ -8,7 +8,9 @@ class LinesPainter extends CustomPainter {
   final int maxLines = 60;
   final Color currentColor;
   final Paint linePainter;
-  LinesPainter(this.currentColor)
+  final DialLineType dialLineType;
+
+  LinesPainter(this.currentColor, this.dialLineType)
       : linePainter = Paint()
           ..color = Colors.redAccent
           ..style = PaintingStyle.stroke
@@ -17,13 +19,23 @@ class LinesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.translate(size.width / 2, size.height / 2);
-
+    var hourSize = 0, secondSize = 0;
+    switch (dialLineType) {
+      case DialLineType.clock:
+        hourSize =15;
+        secondSize =5;
+        break;
+      case DialLineType.date:
+        hourSize =5;
+        secondSize =5;
+        break;
+    }
     canvas.save();
- linePainter.color = currentColor;
+    linePainter.color = currentColor;
     final radius = size.width / 2;
 
     List.generate(maxLines, (i) {
-      var newRadius = (i % 5 == 0) ? radius - 15 : radius - 5;
+      var newRadius = (i % 5 == 0) ? radius - hourSize : radius - secondSize;
       canvas.drawLine(Offset(0, radius), Offset(0, newRadius), linePainter);
       canvas.rotate(2 * pi / maxLines);
     });
@@ -34,3 +46,5 @@ class LinesPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
+enum DialLineType { clock, date }
