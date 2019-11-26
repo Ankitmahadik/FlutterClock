@@ -136,14 +136,20 @@ class _AnalogClockState extends State<AnalogClock> {
 
   Widget _buildDateWidget() {
     return Positioned(
-      top: _width / 4.5,
+      top: _width / 4.3,
       left: _width / 2.4,
       child: Container(
         height: 80,
         width: 80,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Center(child: DateTextHelper(_getDate(), _getMonth())),
+          child: Center(
+            child: DateTextHelper(
+              _getDate(),
+              _getMonth(),
+              _getDay(),
+            ),
+          ),
         ),
       ),
     );
@@ -248,5 +254,9 @@ class _AnalogClockState extends State<AnalogClock> {
 
   String _getMonth() {
     return DateFormat("MMM").format(DateTime.now());
+  }
+
+  String _getDay() {
+    return DateFormat("EEE").format(DateTime.now());
   }
 }
