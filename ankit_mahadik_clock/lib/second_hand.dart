@@ -66,7 +66,7 @@ class LinePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.9;
     _centerPainter = Paint()
-      ..color = Colors.black
+      ..color = Colors.blueGrey
       ..style = PaintingStyle.fill
       ..strokeWidth = 2.9;
   }

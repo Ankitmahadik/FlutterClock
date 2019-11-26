@@ -120,27 +120,30 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
     );
   }
+
   Widget _buildDateBorderWidget() {
     return Positioned(
-      top: _width / 4.7 ,
-      left: _width / 2.5  ,
+      top: _width / 4.7,
+      left: _width / 2.5,
       child: Container(
-        height: 90,
-        width:  90,
-        child: CustomPaint(painter:  LinesPainter (Colors.black38,DialLineType.date),)
-      ),
+          height: 90,
+          width: 90,
+          child: CustomPaint(
+            painter: LinesPainter(Colors.black38, DialLineType.date),
+          )),
     );
   }
+
   Widget _buildDateWidget() {
     return Positioned(
       top: _width / 4.5,
-      left: _width / 2.4  ,
+      left: _width / 2.4,
       child: Container(
         height: 80,
         width: 80,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Center(child: DateTextHelper(_getDate(),_getMonth())),
+          child: Center(child: DateTextHelper(_getDate(), _getMonth())),
         ),
       ),
     );
@@ -186,7 +189,7 @@ class _AnalogClockState extends State<AnalogClock> {
                 width: 350,
                 height: 350,
                 child: CustomPaint(
-                  painter: LinesPainter(currentColor,DialLineType.clock),
+                  painter: LinesPainter(currentColor, DialLineType.clock),
                   child: Container(
                     margin: const EdgeInsets.all(32.0),
                     decoration: BoxDecoration(
@@ -201,29 +204,34 @@ class _AnalogClockState extends State<AnalogClock> {
                     child: Container(
                       height: double.infinity,
                       width: double.infinity,
-                      child: CustomPaint(
-                        painter: TimeLinesPainter(
-                          lineType: LineType.hour,
-                          tick: _hoursPercent(),
-                        ),
-                        child: CustomPaint(
-                            painter: TimeLinesPainter(
-                              lineType: LineType.minute,
-                              tick: _minutesPercent(),
-                            ),
-                            child: Stack(
-                              children: <Widget>[
-                                _buildDateBorderWidget(),
-                                _buildDateWidget(),
-                                Container(
-                                  width: 350,
-                                  height: 350,
-                                  child: SecondHand(
-                                      currentTick: _secondPercent(),
-                                      prevTick: prevTick),
+                      child: Stack(
+                        children: <Widget>[
+                          _buildDateBorderWidget(),
+                          _buildDateWidget(),
+                          Container(
+                            width: 350,
+                            height: 350,
+                            child: CustomPaint(
+                              painter: TimeLinesPainter(
+                                lineType: LineType.hour,
+                                tick: _hoursPercent(),
+                              ),
+                              child: CustomPaint(
+                                painter: TimeLinesPainter(
+                                  lineType: LineType.minute,
+                                  tick: _minutesPercent(),
                                 ),
-                              ],
-                            )),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 350,
+                            height: 350,
+                            child: SecondHand(
+                                currentTick: _secondPercent(),
+                                prevTick: prevTick),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -234,7 +242,11 @@ class _AnalogClockState extends State<AnalogClock> {
     );
   }
 
-  String _getDate() {return DateFormat("dd").format(DateTime.now());}
+  String _getDate() {
+    return DateFormat("dd").format(DateTime.now());
+  }
 
-  String _getMonth() {return DateFormat("MMM").format(DateTime.now());}
+  String _getMonth() {
+    return DateFormat("MMM").format(DateTime.now());
+  }
 }

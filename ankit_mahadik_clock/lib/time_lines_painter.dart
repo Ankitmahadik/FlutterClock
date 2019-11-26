@@ -17,7 +17,7 @@ class TimeLinesPainter extends CustomPainter {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2.9,
         minutePainter = Paint()
-          ..color = Colors.black
+          ..color = Colors.blueGrey
           ..style = PaintingStyle.fill
           ..strokeWidth = 4.2,
         hourPainter = Paint()
