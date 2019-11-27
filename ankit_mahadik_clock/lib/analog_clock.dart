@@ -164,7 +164,7 @@ class _AnalogClockState extends State<AnalogClock> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: Text("${widget.model.temperature}\n${widget.model.unitString}",textAlign: TextAlign.center,style: TextStyle(
+            child: Text("${widget.model.temperature.toStringAsFixed(2) }\n${widget.model.unitString}",textAlign: TextAlign.center,style: TextStyle(
                 color: Colors.black26.withOpacity(0.50),
                 fontSize: 14.0,
                 fontFamily: 'VarelaRound',
@@ -198,7 +198,7 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget buildSecondProgressWidget() {
     return Center(
       child: CircleProgressSecond(
-        radius: 137.0,
+        radius: 140.0,
         dotColor: currentColor,
         dotRadius: 5.0,
         shadowWidth: 8.0,
@@ -237,7 +237,7 @@ class _AnalogClockState extends State<AnalogClock> {
                 child: CustomPaint(
                   painter: LinesPainter(currentColor, DialLineType.clock),
                   child: Container(
-                    margin: const EdgeInsets.all(32.0),
+                    margin: const EdgeInsets.all(28.0),
                     decoration: BoxDecoration(
                         color: bgColor,
                         shape: BoxShape.circle,
