@@ -48,13 +48,18 @@ class LinesPainter extends CustomPainter {
       List.generate(maxLines, (i) {
         var newRadius = radius - hourSize;
         linePainter.strokeWidth = (i % 5 == 0) ? 2.0 : 0.8;
+        if (i < 30) {
+          linePainter.color = Colors.red;
+        } else {
+          linePainter.color = Colors.grey;
+        }
         canvas.drawLine(Offset(0, radius), Offset(0, newRadius), linePainter);
         canvas.rotate(2 * pi / maxLines);
       });
       double scaleFactor = size.shortestSide / BASE_SIZE;
 
       TextStyle style = TextStyle(
-          color: Color(0xFF1976D2),
+          color: Colors.blueGrey,
           fontWeight: FontWeight.bold,
           fontSize: 18.0 * scaleFactor * 2.0);
       TextSpan span12 = new TextSpan(style: style, text: "AM");
@@ -67,6 +72,10 @@ class LinesPainter extends CustomPainter {
       tp12.paint(canvas,
           size.center(Offset(-(size / 1.68).height, -(size / 1.12).height)));
 
+      style = TextStyle(
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+          fontSize: 18.0 * scaleFactor * 2.0);
       TextSpan span13 = new TextSpan(style: style, text: "PM");
       TextPainter tp13 = new TextPainter(
           text: span13,

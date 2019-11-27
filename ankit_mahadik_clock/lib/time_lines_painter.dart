@@ -13,7 +13,7 @@ class TimeLinesPainter extends CustomPainter {
 
   TimeLinesPainter({this.tick, this.lineType})
       : linePainter = Paint()
-          ..color = Colors.black
+          ..color = Colors.black54
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2.5,
         minutePainter = Paint()

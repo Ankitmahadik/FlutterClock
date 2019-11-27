@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DateTextHelper extends StatelessWidget {
-  final String _date, _month,_day;
+  final String _date, _month, _day;
 
-  DateTextHelper(this._date, this._month,this._day);
+  DateTextHelper(this._date, this._month, this._day);
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +14,16 @@ class DateTextHelper extends StatelessWidget {
       text: TextSpan(
         text: _month.toUpperCase(),
         style: TextStyle(
-            color: Colors.black26.withOpacity(0.50), fontSize: 15.0, fontFamily: 'VarelaRound',
+            color: Colors.black26.withOpacity(0.50),
+            fontSize: 13.0,
+            fontFamily: 'VarelaRound',
             fontWeight: FontWeight.bold),
         children: <TextSpan>[
           TextSpan(
             text: " $_date",
             style: TextStyle(
               color: Colors.black26.withOpacity(0.70),
-              fontSize:18.0,
+              fontSize: 14.0,
               fontWeight: FontWeight.bold,
               decorationStyle: TextDecorationStyle.wavy,
             ),
@@ -30,7 +32,7 @@ class DateTextHelper extends StatelessWidget {
                 text: "\n${_day.toUpperCase()}",
                 style: TextStyle(
                   color: Colors.black26.withOpacity(0.90),
-                  fontSize:18.0,
+                  fontSize: 14.0,
                   fontWeight: FontWeight.bold,
                   decorationStyle: TextDecorationStyle.wavy,
                 ),
