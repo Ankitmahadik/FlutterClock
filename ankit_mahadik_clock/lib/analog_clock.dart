@@ -109,6 +109,19 @@ class _AnalogClockState extends State<AnalogClock> {
     );
   }
 
+  Widget _buildTempBorderWidget() {
+    return Positioned(
+      top: _width / 4.7,
+      right: _width / 2.5,
+      child: Container(
+          height: 90,
+          width: 90,
+          child: CustomPaint(
+            painter: LinesPainter(Colors.black38, DialLineType.date),
+          )),
+    );
+  }
+
   Widget _buildDateBorderWidget() {
     return Positioned(
       top: _width / 4.7,
@@ -125,7 +138,7 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget _buildMeridiemDialWidget() {
     return Positioned(
       top: _width / 2.5,
-      left: _width / 4.3,
+      left: _width / 4.5,
       child: Container(
         height: 90,
         width: 90,
@@ -141,7 +154,26 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
     );
   }
-
+  Widget _buildTempWidget() {
+    return Positioned(
+      top: _width / 4.3,
+      right:   _width / 2.4,
+      child: Container(
+        height: 80,
+        width: 80,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text("${widget.model.temperature}\n${widget.model.unitString}",textAlign: TextAlign.center,style: TextStyle(
+                color: Colors.black26.withOpacity(0.50),
+                fontSize: 14.0,
+                fontFamily: 'VarelaRound',
+                fontWeight: FontWeight.bold)),
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildDateWidget() {
     return Positioned(
       top: _width / 4.3,
@@ -220,6 +252,8 @@ class _AnalogClockState extends State<AnalogClock> {
                       width: double.infinity,
                       child: Stack(
                         children: <Widget>[
+                          _buildTempBorderWidget(),
+                          _buildTempWidget(),
                           _buildDateBorderWidget(),
                           _buildDateWidget(),
                           _buildMeridiemDialWidget(),

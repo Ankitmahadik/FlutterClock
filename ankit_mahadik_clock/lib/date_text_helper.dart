@@ -22,7 +22,7 @@ class DateTextHelper extends StatelessWidget {
           TextSpan(
             text: " $_date",
             style: TextStyle(
-              color: Colors.black26.withOpacity(0.70),
+              color: Colors.black26.withOpacity(0.50),
               fontSize: 14.0,
               fontWeight: FontWeight.bold,
               decorationStyle: TextDecorationStyle.wavy,
