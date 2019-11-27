@@ -35,21 +35,11 @@ class AnalogClock extends StatefulWidget {
 
 class _AnalogClockState extends State<AnalogClock> {
   var _now = DateTime.now();
-  var _temperature = '';
-  var _temperatureRange = '';
-  var _condition = '';
-  var _location = '';
   Timer _timer;
   double prevTick = 0.0;
   final Color bgColor = Colors.white;
   Color currentColor = Color(0xFF6A1B9A);
   int currentColorIndex = 0;
-
-  double _secondPercent() => _now.second / 60;
-
-  double _minutesPercent() => _now.minute / 60;
-
-  double _hoursPercent() => _now.hour / 12;
 
   double _height = 0.0, _width = 0.0;
 
@@ -87,12 +77,7 @@ class _AnalogClockState extends State<AnalogClock> {
   }
 
   void _updateModel() {
-    setState(() {
-      _temperature = widget.model.temperatureString;
-      _temperatureRange = '(${widget.model.low} - ${widget.model.highString})';
-      _condition = widget.model.weatherString;
-      _location = widget.model.location;
-    });
+    setState(() {});
   }
 
   void _updateTime() {
@@ -134,6 +119,26 @@ class _AnalogClockState extends State<AnalogClock> {
           child: CustomPaint(
             painter: LinesPainter(Colors.black38, DialLineType.date),
           )),
+    );
+  }
+
+  Widget _buildMeridiemDialWidget() {
+    return Positioned(
+      top: _width / 2.5,
+      left: _width / 4.3,
+      child: Container(
+        height: 90,
+        width: 90,
+        child: CustomPaint(
+          painter: LinesPainter(Color(0xFF64B5F6), DialLineType.meridiem),
+          child: CustomPaint(
+            painter: TimeLinesPainter(
+              lineType: LineType.meridiem,
+              tick: _hoursMeridiem(),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -217,6 +222,7 @@ class _AnalogClockState extends State<AnalogClock> {
                         children: <Widget>[
                           _buildDateBorderWidget(),
                           _buildDateWidget(),
+                          _buildMeridiemDialWidget(),
                           Container(
                             width: 350,
                             height: 350,
@@ -270,5 +276,16 @@ class _AnalogClockState extends State<AnalogClock> {
       currentColorIndex = 0;
     }
     return currentColorIndex;
+  }
+
+  double _secondPercent() => _now.second / 60;
+
+  double _minutesPercent() => _now.minute / 60;
+
+  double _hoursPercent() => _now.hour / 12;
+
+  double _hoursMeridiem() {
+    var hour24 = int.parse(DateFormat("H").format(DateTime.now()));
+    return _now.hour / 24;
   }
 }

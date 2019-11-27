@@ -15,7 +15,7 @@ class TimeLinesPainter extends CustomPainter {
       : linePainter = Paint()
           ..color = Colors.black
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.9,
+          ..strokeWidth = 2.5,
         minutePainter = Paint()
           ..color = Colors.blueGrey
           ..style = PaintingStyle.fill
@@ -46,10 +46,12 @@ class TimeLinesPainter extends CustomPainter {
         canvas.drawPath(_minutePath(radius), minutePainter);
         canvas.drawShadow(_minutePath(radius), Colors.black, 6.0, false);
         break;
-      case LineType.second:
+      case LineType.meridiem:
         canvas.rotate(2 * pi * tick);
-        canvas.drawPath(_secondPath(radius), minutePainter);
-        canvas.drawCircle(Offset(0.0, 0.0), radius / 20, centerPainter);
+        canvas.drawCircle(Offset(0.0, 0.0), radius / 35, linePainter);
+        canvas.drawPath(_secondPath(radius), linePainter);
+        centerPainter.color = Colors.redAccent;
+        canvas.drawCircle(Offset(0.0, 0.0), radius / 30, centerPainter);
         break;
     }
   }
@@ -78,7 +80,8 @@ class TimeLinesPainter extends CustomPainter {
 
   Path _secondPath(double radius) {
     return Path()
-      ..lineTo(0, -(radius + 10))
+      ..moveTo(0.0, radius - (radius / 1.2))
+      ..lineTo(0.0, -(radius - (radius / 2.0)))
       ..close();
   }
 
@@ -86,4 +89,4 @@ class TimeLinesPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-enum LineType { hour, minute, second }
+enum LineType { hour, minute, meridiem }
