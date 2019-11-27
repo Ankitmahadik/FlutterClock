@@ -42,7 +42,8 @@ class _AnalogClockState extends State<AnalogClock> {
   Timer _timer;
   double prevTick = 0.0;
   final Color bgColor = Colors.white;
-  Color currentColor = Color(0xff5733);
+  Color currentColor = Color(0xFF6A1B9A);
+  int currentColorIndex = 0;
 
   double _secondPercent() => _now.second / 60;
 
@@ -97,8 +98,10 @@ class _AnalogClockState extends State<AnalogClock> {
   void _updateTime() {
     setState(() {
       prevTick = _secondPercent();
+      if (_minutesPercent() != (DateTime.now().minute / 60)) {
+        currentColor = Utils().getColorsArray()[_getCurrentIndex()];
+      }
       _now = DateTime.now();
-      currentColor = Utils().getColorsArray()[_now.minute.toInt()];
       _timer = Timer(
         Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
@@ -258,5 +261,14 @@ class _AnalogClockState extends State<AnalogClock> {
 
   String _getDay() {
     return DateFormat("EEE").format(DateTime.now());
+  }
+
+  int _getCurrentIndex() {
+    if (currentColorIndex < Utils().getColorsArray().length - 1) {
+      currentColorIndex++;
+    } else {
+      currentColorIndex = 0;
+    }
+    return currentColorIndex;
   }
 }
