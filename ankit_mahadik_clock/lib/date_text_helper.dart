@@ -15,7 +15,7 @@ class DateTextHelper extends StatelessWidget {
         text: _month.toUpperCase(),
         style: TextStyle(
             color: Colors.black26.withOpacity(0.50),
-            fontSize: 13.0,
+            fontSize: 11.0,
             fontFamily: 'VarelaRound',
             fontWeight: FontWeight.bold),
         children: <TextSpan>[
@@ -23,7 +23,7 @@ class DateTextHelper extends StatelessWidget {
             text: " $_date",
             style: TextStyle(
               color: Colors.black26.withOpacity(0.50),
-              fontSize: 14.0,
+              fontSize: 12.0,
               fontWeight: FontWeight.bold,
               decorationStyle: TextDecorationStyle.wavy,
             ),
@@ -32,7 +32,7 @@ class DateTextHelper extends StatelessWidget {
                 text: "\n${_day.toUpperCase()}",
                 style: TextStyle(
                   color: Colors.black26.withOpacity(0.90),
-                  fontSize: 14.0,
+                  fontSize: 12.0,
                   fontWeight: FontWeight.bold,
                   decorationStyle: TextDecorationStyle.wavy,
                 ),

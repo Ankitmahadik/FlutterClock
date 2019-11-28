@@ -96,26 +96,21 @@ class _AnalogClockState extends State<AnalogClock> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GestureDetector(
-        onTap: () {},
-        child: Stack(
-          children: <Widget>[
-            buildClockWidget(),
-            buildSecondProgressWidget(),
-          ],
-        ),
-      ),
+    return Stack(
+      children: <Widget>[
+        buildClockWidget(),
+        buildSecondProgressWidget(),
+      ],
     );
   }
 
   Widget _buildTempBorderWidget() {
     return Positioned(
-      top: _width / 4.7,
-      right: _width / 2.5,
+      top: 70,
+      left: 15,
       child: Container(
-          height: 90,
-          width: 90,
+          height: 75,
+          width: 75,
           child: CustomPaint(
             painter: LinesPainter(Colors.black38, DialLineType.date),
           )),
@@ -124,11 +119,11 @@ class _AnalogClockState extends State<AnalogClock> {
 
   Widget _buildDateBorderWidget() {
     return Positioned(
-      top: _width / 4.7,
-      left: _width / 2.5,
+      top: 70,
+      right: 15,
       child: Container(
-          height: 90,
-          width: 90,
+          height: 75,
+          width: 75,
           child: CustomPaint(
             painter: LinesPainter(Colors.black38, DialLineType.date),
           )),
@@ -137,11 +132,11 @@ class _AnalogClockState extends State<AnalogClock> {
 
   Widget _buildMeridiemDialWidget() {
     return Positioned(
-      top: _width / 2.5,
-      left: _width / 4.5,
+      top: 135,
+      left: 75,
       child: Container(
-        height: 90,
-        width: 90,
+        height: 70,
+        width: 70,
         child: CustomPaint(
           painter: LinesPainter(Color(0xFF64B5F6), DialLineType.meridiem),
           child: CustomPaint(
@@ -154,33 +149,38 @@ class _AnalogClockState extends State<AnalogClock> {
       ),
     );
   }
+
   Widget _buildTempWidget() {
     return Positioned(
-      top: _width / 4.3,
-      right:   _width / 2.4,
+      top: 80,
+      left: 20,
       child: Container(
-        height: 80,
-        width: 80,
+        height: 65,
+        width: 65,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: Text("${widget.model.temperature.toStringAsFixed(2) }\n${widget.model.unitString}",textAlign: TextAlign.center,style: TextStyle(
-                color: Colors.black26.withOpacity(0.50),
-                fontSize: 14.0,
-                fontFamily: 'VarelaRound',
-                fontWeight: FontWeight.bold)),
+            child: Text(
+                "${widget.model.temperature.toStringAsFixed(2)}\n${widget.model.unitString}",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.black26.withOpacity(0.50),
+                    fontSize: 12.0,
+                    fontFamily: 'VarelaRound',
+                    fontWeight: FontWeight.bold)),
           ),
         ),
       ),
     );
   }
+
   Widget _buildDateWidget() {
     return Positioned(
-      top: _width / 4.3,
-      left: _width / 2.4,
+      top: 80,
+      right: 20,
       child: Container(
-        height: 80,
-        width: 80,
+        height: 65,
+        width: 65,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
@@ -198,9 +198,9 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget buildSecondProgressWidget() {
     return Center(
       child: CircleProgressSecond(
-        radius: 140.0,
+        radius: 110.0,
         dotColor: currentColor,
-        dotRadius: 5.0,
+        dotRadius: 3.0,
         shadowWidth: 8.0,
         progress: _secondPercent(),
         prevProgress: prevTick,
@@ -211,8 +211,8 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget buildClockWidget() {
     return Center(
       child: Container(
-          height: 350,
-          width: 350,
+          height: 280,
+          width: 280,
           decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
@@ -232,12 +232,12 @@ class _AnalogClockState extends State<AnalogClock> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Container(
-                width: 350,
-                height: 350,
+                width: 280,
+                height: 280,
                 child: CustomPaint(
                   painter: LinesPainter(currentColor, DialLineType.clock),
                   child: Container(
-                    margin: const EdgeInsets.all(28.0),
+                    margin: const EdgeInsets.all(23.0),
                     decoration: BoxDecoration(
                         color: bgColor,
                         shape: BoxShape.circle,
@@ -258,8 +258,8 @@ class _AnalogClockState extends State<AnalogClock> {
                           _buildDateWidget(),
                           _buildMeridiemDialWidget(),
                           Container(
-                            width: 350,
-                            height: 350,
+                            width: 280,
+                            height: 280,
                             child: CustomPaint(
                               painter: TimeLinesPainter(
                                 lineType: LineType.hour,
@@ -274,8 +274,8 @@ class _AnalogClockState extends State<AnalogClock> {
                             ),
                           ),
                           Container(
-                            width: 350,
-                            height: 350,
+                            width: 280,
+                            height: 280,
                             child: SecondHand(
                                 currentTick: _secondPercent(),
                                 prevTick: prevTick),

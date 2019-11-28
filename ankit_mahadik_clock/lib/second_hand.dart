@@ -64,11 +64,11 @@ class LinePainter extends CustomPainter {
     _paint = Paint()
       ..color = Colors.redAccent
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.9;
+      ..strokeWidth = 2.0;
     _centerPainter = Paint()
       ..color = Colors.blueGrey
       ..style = PaintingStyle.fill
-      ..strokeWidth = 2.9;
+      ..strokeWidth = 2.0;
   }
 
   @override
@@ -76,10 +76,10 @@ class LinePainter extends CustomPainter {
     final radius = size.width / 2;
     canvas.translate(radius, radius);
     canvas.rotate(progress);
-    canvas.drawCircle(Offset(0.0, 0.0), radius / 20, _centerPainter);
+    canvas.drawCircle(Offset(0.0, 0.0), radius / 25, _centerPainter);
     canvas.drawPath(_secondPath(radius), _paint);
     _centerPainter.color = Colors.redAccent;
-    canvas.drawCircle(Offset(0.0, 0.0), radius / 30, _centerPainter);
+    canvas.drawCircle(Offset(0.0, 0.0), radius / 40, _centerPainter);
   }
 
   @override

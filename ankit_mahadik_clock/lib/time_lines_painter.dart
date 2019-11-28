@@ -15,19 +15,19 @@ class TimeLinesPainter extends CustomPainter {
       : linePainter = Paint()
           ..color = Colors.black54
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.5,
+          ..strokeWidth = 1.8,
         minutePainter = Paint()
           ..color = Colors.blueGrey
           ..style = PaintingStyle.fill
-          ..strokeWidth = 4.2,
+          ..strokeWidth = 1.8,
         hourPainter = Paint()
           ..color = Colors.black
           ..style = PaintingStyle.fill
-          ..strokeWidth = 5.2,
+          ..strokeWidth = 2.8,
         centerPainter = Paint()
           ..color = Colors.redAccent
           ..style = PaintingStyle.fill
-          ..strokeWidth = 2.9;
+          ..strokeWidth = 2.0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -48,33 +48,33 @@ class TimeLinesPainter extends CustomPainter {
         break;
       case LineType.meridiem:
         canvas.rotate(2 * pi * tick);
-        canvas.drawCircle(Offset(0.0, 0.0), radius / 35, linePainter);
+        canvas.drawCircle(Offset(0.0, 0.0), radius / 30, linePainter);
         canvas.drawPath(_secondPath(radius), linePainter);
         centerPainter.color = Colors.redAccent;
-        canvas.drawCircle(Offset(0.0, 0.0), radius / 30, centerPainter);
+        canvas.drawCircle(Offset(0.0, 0.0), radius / 25, centerPainter);
         break;
     }
   }
 
   Path _hourPath(double radius) {
     return Path()
-      ..moveTo(-1.5, -radius / 1.8)
-      ..lineTo(-4, -radius / 3.6)
-      ..lineTo(-2.0, 5.0)
-      ..lineTo(2.0, 5.0)
-      ..lineTo(4, -radius / 3.6)
-      ..lineTo(1.5, -radius / 1.8)
+      ..moveTo(-0.8, -radius / 1.7)
+      ..lineTo(-2.5, -radius / 3.5)
+      ..lineTo(-0.8,5.0)
+      ..lineTo(0.8,5.0)
+      ..lineTo(2.5, -radius / 3.5)
+      ..lineTo(0.8, -radius / 1.7)
       ..close();
   }
 
   Path _minutePath(double radius) {
     return Path()
-      ..moveTo(-1.5, -radius / 1.2)
-      ..lineTo(-3.5, -radius / 3.2)
-      ..lineTo(-2.0, 5.0)
-      ..lineTo(2.0, 5.0)
-      ..lineTo(3.5, -radius / 3.2)
-      ..lineTo(1.5, -radius / 1.2)
+      ..moveTo(-1.0, -radius / 1.15)
+      ..lineTo(-2.5, -radius / 2.5)
+      ..lineTo(-1.0,3.0)
+      ..lineTo(1.0, 3.0)
+      ..lineTo(2.5, -radius / 2.5)
+      ..lineTo(1.0, -radius / 1.15)
       ..close();
   }
 
