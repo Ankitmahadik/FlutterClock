@@ -6,10 +6,10 @@ import 'package:ankit_mahadik_clock/lines_painter.dart';
 import 'package:ankit_mahadik_clock/second_hand.dart';
 import 'package:ankit_mahadik_clock/time_lines_painter.dart';
 import 'package:ankit_mahadik_clock/utils.dart';
+import 'package:ankit_mahadik_clock/circle_border_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clock_helper/model.dart';
-import 'package:intl/intl.dart';
 
 class AnalogClock extends StatefulWidget {
   const AnalogClock(this.model);
@@ -90,11 +90,10 @@ class _AnalogClockState extends State<AnalogClock> {
       top: 70,
       left: 15,
       child: Container(
-          height: 75,
-          width: 75,
-          child: CustomPaint(
-            painter: LinesPainter(Colors.black38, DialLineType.date),
-          )),
+        height: 75,
+        width: 75,
+        child: const CircleBorderWidget(),
+      ),
     );
   }
 
@@ -103,11 +102,10 @@ class _AnalogClockState extends State<AnalogClock> {
       top: 70,
       right: 15,
       child: Container(
-          height: 75,
-          width: 75,
-          child: CustomPaint(
-            painter: LinesPainter(Colors.black38, DialLineType.date),
-          )),
+        height: 75,
+        width: 75,
+        child: const CircleBorderWidget(),
+      ),
     );
   }
 
@@ -136,20 +134,18 @@ class _AnalogClockState extends State<AnalogClock> {
       top: 80,
       left: 20,
       child: Container(
+        padding: const EdgeInsets.all(8.0),
         height: 65,
         width: 65,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Text(
-                "${widget.model.temperature.toStringAsFixed(2)}\n${widget.model.unitString}",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.black26.withOpacity(0.50),
-                    fontSize: 12.0,
-                    fontFamily: 'VarelaRound',
-                    fontWeight: FontWeight.bold)),
-          ),
+        child: Center(
+          child: Text(
+              "${widget.model.temperature.toStringAsFixed(2)}\n${widget.model.unitString}",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  color: const Color(0x80000000),
+                  fontSize: 12.0,
+                  fontFamily: 'VarelaRound',
+                  fontWeight: FontWeight.bold)),
         ),
       ),
     );
@@ -157,21 +153,13 @@ class _AnalogClockState extends State<AnalogClock> {
 
   Widget _buildDateWidget() {
     return Positioned(
-      top: 80,
+      top: 90,
       right: 20,
       child: Container(
+        padding: const EdgeInsets.all(8.0),
         height: 65,
         width: 65,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: DateTextHelper(
-              _getDate(),
-              _getMonth(),
-              _getDay(),
-            ),
-          ),
-        ),
+        child: DateTextHelper(),
       ),
     );
   }
@@ -194,6 +182,7 @@ class _AnalogClockState extends State<AnalogClock> {
       child: Container(
           height: 280,
           width: 280,
+          padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
@@ -209,35 +198,32 @@ class _AnalogClockState extends State<AnalogClock> {
                     offset: const Offset(12, 0),
                     spreadRadius: 5),
               ]),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: 280,
-              height: 280,
-              child: CustomPaint(
-                painter: LinesPainter(currentColor, DialLineType.clock),
-                child: Container(
-                  margin: const EdgeInsets.all(23.0),
-                  decoration: BoxDecoration(
-                      color: bgColor,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black26.withOpacity(0.03),
-                            blurRadius: 5,
-                            spreadRadius: 8),
-                      ]),
-                  child: Stack(
-                    children: <Widget>[
-                      _buildTempBorderWidget(),
-                      _buildTempWidget(),
-                      _buildDateBorderWidget(),
-                      _buildDateWidget(),
-                      _buildMeridiemDialWidget(),
-                      _buildHourMinuteHandWidget(),
-                      _buildSecondHandWidget(),
-                    ],
-                  ),
+          child: Container(
+            width: 280,
+            height: 280,
+            child: CustomPaint(
+              painter: LinesPainter(currentColor, DialLineType.clock),
+              child: Container(
+                margin: const EdgeInsets.all(23.0),
+                decoration: BoxDecoration(
+                    color: bgColor,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black26.withOpacity(0.03),
+                          blurRadius: 5,
+                          spreadRadius: 8),
+                    ]),
+                child: Stack(
+                  children: <Widget>[
+                    _buildTempBorderWidget(),
+                    _buildTempWidget(),
+                    _buildDateBorderWidget(),
+                    _buildDateWidget(),
+                    _buildMeridiemDialWidget(),
+                    _buildHourMinuteHandWidget(),
+                    _buildSecondHandWidget(),
+                  ],
                 ),
               ),
             ),
@@ -272,18 +258,6 @@ class _AnalogClockState extends State<AnalogClock> {
     );
   }
 
-  String _getDate() {
-    return DateFormat("dd").format(DateTime.now());
-  }
-
-  String _getMonth() {
-    return DateFormat("MMM").format(DateTime.now());
-  }
-
-  String _getDay() {
-    return DateFormat("EEE").format(DateTime.now());
-  }
-
   int _getCurrentIndex() {
     if (currentColorIndex < Utils().getColorsArray().length - 1) {
       currentColorIndex++;
@@ -300,7 +274,6 @@ class _AnalogClockState extends State<AnalogClock> {
   double _hoursPercent() => _now.hour / 12;
 
   double _hoursMeridiem() {
-    var hour24 = int.parse(DateFormat("H").format(DateTime.now()));
     return _now.hour / 24;
   }
 }
