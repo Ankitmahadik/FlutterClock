@@ -60,8 +60,8 @@ class TimeLinesPainter extends CustomPainter {
     return Path()
       ..moveTo(-0.8, -radius / 1.7)
       ..lineTo(-2.5, -radius / 3.5)
-      ..lineTo(-0.8,5.0)
-      ..lineTo(0.8,5.0)
+      ..lineTo(-1.0,4.0)
+      ..lineTo(1.0,4.0)
       ..lineTo(2.5, -radius / 3.5)
       ..lineTo(0.8, -radius / 1.7)
       ..close();

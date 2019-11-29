@@ -36,12 +36,13 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
   }
 
   void animateHand() {
+    final tickIncrement = 0.100;
     //Extra value added to match speed
-    final beginPos = (2 * pi * widget.prevTick + 0.097);
-    var endPos = (2 * pi * widget.currentTick + 0.097);
+    final beginPos = (2 * pi * widget.prevTick +tickIncrement);
+    var endPos = (2 * pi * widget.currentTick + tickIncrement);
     if (beginPos > endPos) {
       //Extra value added to Switch last animation smoothly on minute change
-      endPos = (2 * pi * widget.prevTick + 0.097) + 0.1111;
+      endPos = (2 * pi * widget.prevTick + tickIncrement) + 0.1055;
     }
     _controller = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
