@@ -46,6 +46,7 @@ class _CircleProgressState extends State<CircleProgressSecond>
   Animation<double> _animation;
   bool isValidTouch = false;
   final GlobalKey paintKey = GlobalKey();
+  var sec = DateTime.now().second;
 
   @override
   void initState() {
@@ -56,7 +57,10 @@ class _CircleProgressState extends State<CircleProgressSecond>
   @override
   void didUpdateWidget(CircleProgressSecond oldWidget) {
     super.didUpdateWidget(oldWidget);
-    animate();
+    if (DateTime.now().second != sec) {
+      sec = DateTime.now().second;
+      animate();
+    }
   }
 
   @override

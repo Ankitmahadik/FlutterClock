@@ -16,6 +16,7 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
   double _progress;
   Animation<double> _animation;
   AnimationController _controller;
+  var sec = DateTime.now().second;
 
   @override
   void initState() {
@@ -27,7 +28,10 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
   @override
   void didUpdateWidget(SecondHand oldWidget) {
     super.didUpdateWidget(oldWidget);
-    animateHand();
+    if (DateTime.now().second != sec) {
+      sec = DateTime.now().second;
+      animateHand();
+    }
   }
 
   @override
@@ -38,7 +42,7 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
   void animateHand() {
     final tickIncrement = 0.100;
     //Extra value added to match speed
-    final beginPos = (2 * pi * widget.prevTick +tickIncrement);
+    final beginPos = (2 * pi * widget.prevTick + tickIncrement);
     var endPos = (2 * pi * widget.currentTick + tickIncrement);
     if (beginPos > endPos) {
       //Extra value added to Switch last animation smoothly on minute change
