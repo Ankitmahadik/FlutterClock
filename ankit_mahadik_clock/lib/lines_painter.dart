@@ -62,7 +62,7 @@ class LinesPainter extends CustomPainter {
       double scaleFactor = size.shortestSide / BASE_SIZE;
 
       TextStyle style = TextStyle(
-          color: Colors.blueGrey,
+          color: Colors.grey,
           fontWeight: FontWeight.bold,
           fontSize: 16.0 * scaleFactor * 2.0);
       TextSpan span12 = new TextSpan(style: style, text: "AM");

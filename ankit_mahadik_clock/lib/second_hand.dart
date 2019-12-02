@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:ankit_mahadik_clock/utils.dart';
 import 'package:flutter/material.dart';
 
 class SecondHand extends StatefulWidget {
@@ -36,7 +37,7 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(painter: LinePainter(progress: _progress));
+    return CustomPaint(painter: LinePainter(progress: _progress,context: context));
   }
 
   void animateHand() {
@@ -64,8 +65,9 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
 class LinePainter extends CustomPainter {
   Paint _paint, _centerPainter;
   double progress;
+  BuildContext context;
 
-  LinePainter({this.progress}) {
+  LinePainter({this.progress,this.context}) {
     _paint = Paint()
       ..color = Colors.redAccent
       ..style = PaintingStyle.stroke
@@ -78,6 +80,7 @@ class LinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    _centerPainter.color=Utils().isDarkMode(this.context) ? Color(0xfffbe3b9) : Colors.blueGrey;
     final radius = size.width / 2;
     canvas.translate(radius, radius);
     canvas.rotate(progress);

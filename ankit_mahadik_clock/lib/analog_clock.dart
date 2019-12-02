@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:ankit_mahadik_clock/circle_border_widget.dart';
 import 'package:ankit_mahadik_clock/circle_progress_second.dart';
+import 'package:ankit_mahadik_clock/colors_util.dart';
 import 'package:ankit_mahadik_clock/date_text_helper.dart';
 import 'package:ankit_mahadik_clock/lines_painter.dart';
 import 'package:ankit_mahadik_clock/second_hand.dart';
 import 'package:ankit_mahadik_clock/time_lines_painter.dart';
 import 'package:ankit_mahadik_clock/utils.dart';
-import 'package:ankit_mahadik_clock/circle_border_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clock_helper/model.dart';
@@ -24,7 +25,9 @@ class _AnalogClockState extends State<AnalogClock> {
   var _now = DateTime.now();
   Timer _timer;
   double prevTick = 0.0;
-  final Color bgColor = Colors.white;
+  Color bgColor = Colors.white;
+  Color textColor = Colors.white;
+  Color shadowColor = Colors.black26.withOpacity(0.04);
   Color currentColor = Color(0xFF6A1B9A);
   int currentColorIndex = 0;
 
@@ -65,7 +68,7 @@ class _AnalogClockState extends State<AnalogClock> {
     setState(() {
       prevTick = _secondPercent();
       if (_minutesPercent() != (DateTime.now().minute / 60)) {
-        currentColor = Utils().getColorsArray()[_getCurrentIndex()];
+        currentColor = _getCurrentColor();
       }
       _now = DateTime.now();
       _timer = Timer(
@@ -77,6 +80,7 @@ class _AnalogClockState extends State<AnalogClock> {
 
   @override
   Widget build(BuildContext context) {
+    checkThemeMode(context);
     return Stack(
       children: <Widget>[
         buildClockWidget(),
@@ -120,9 +124,9 @@ class _AnalogClockState extends State<AnalogClock> {
           painter: LinesPainter(Color(0xFF64B5F6), DialLineType.meridiem),
           child: CustomPaint(
             painter: TimeLinesPainter(
-              lineType: LineType.meridiem,
-              tick: _hoursMeridiem(),
-            ),
+                lineType: LineType.meridiem,
+                tick: _hoursMeridiem(),
+                context: context),
           ),
         ),
       ),
@@ -141,8 +145,8 @@ class _AnalogClockState extends State<AnalogClock> {
           child: Text(
               "${widget.model.temperature.toStringAsFixed(2)}\n${widget.model.unitString}",
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: const Color(0x80000000),
+              style: TextStyle(
+                  color: textColor,
                   fontSize: 12.0,
                   fontFamily: 'VarelaRound',
                   fontWeight: FontWeight.bold)),
@@ -183,21 +187,19 @@ class _AnalogClockState extends State<AnalogClock> {
           height: 280,
           width: 280,
           padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26.withOpacity(0.04),
-                    blurRadius: 10,
-                    offset: const Offset(-12, 0),
-                    spreadRadius: 2),
-                BoxShadow(
-                    color: Colors.black26.withOpacity(0.04),
-                    blurRadius: 10,
-                    offset: const Offset(12, 0),
-                    spreadRadius: 5),
-              ]),
+          decoration:
+              BoxDecoration(color: bgColor, shape: BoxShape.circle, boxShadow: [
+            BoxShadow(
+                color: shadowColor,
+                blurRadius: 10,
+                offset: const Offset(-12, 0),
+                spreadRadius: 2),
+            BoxShadow(
+                color: shadowColor,
+                blurRadius: 10,
+                offset: const Offset(12, 0),
+                spreadRadius: 5),
+          ]),
           child: Container(
             width: 280,
             height: 280,
@@ -210,9 +212,7 @@ class _AnalogClockState extends State<AnalogClock> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black26.withOpacity(0.03),
-                          blurRadius: 5,
-                          spreadRadius: 8),
+                          color: shadowColor, blurRadius: 5, spreadRadius: 8),
                     ]),
                 child: Stack(
                   children: <Widget>[
@@ -247,24 +247,28 @@ class _AnalogClockState extends State<AnalogClock> {
         painter: TimeLinesPainter(
           lineType: LineType.hour,
           tick: _hoursPercent(),
+          context: context,
         ),
         child: CustomPaint(
           painter: TimeLinesPainter(
-            lineType: LineType.minute,
-            tick: _minutesPercent(),
-          ),
+              lineType: LineType.minute,
+              tick: _minutesPercent(),
+              context: context),
         ),
       ),
     );
   }
 
-  int _getCurrentIndex() {
-    if (currentColorIndex < Utils().getColorsArray().length - 1) {
+  Color _getCurrentColor() {
+    List<Color> array = Utils().isDarkMode(context)
+        ? ColorsUtil().getColorsDarkArray()
+        : ColorsUtil().getColorsLightArray();
+    if (currentColorIndex < array.length - 1) {
       currentColorIndex++;
     } else {
       currentColorIndex = 0;
     }
-    return currentColorIndex;
+    return array[currentColorIndex];
   }
 
   double _secondPercent() => _now.second / 60;
@@ -275,5 +279,17 @@ class _AnalogClockState extends State<AnalogClock> {
 
   double _hoursMeridiem() {
     return _now.hour / 24;
+  }
+
+  void checkThemeMode(BuildContext context) {
+    if (Utils().isDarkMode(context)) {
+      bgColor = ColorsUtil().clockBGDark;
+      shadowColor = ColorsUtil().shadowColorDark;
+      textColor = ColorsUtil().textColorDark;
+    } else {
+      bgColor = ColorsUtil().clockBGLight;
+      shadowColor = ColorsUtil().shadowColorLight;
+      textColor = ColorsUtil().textColorLight;
+    }
   }
 }

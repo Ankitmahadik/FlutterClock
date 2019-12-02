@@ -8,7 +8,8 @@ class CircleBorderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: LinesPainter(Colors.black38, DialLineType.date),
+      painter: LinesPainter(Colors.grey.withOpacity(0.8), DialLineType.date),
     );
   }
 }
+

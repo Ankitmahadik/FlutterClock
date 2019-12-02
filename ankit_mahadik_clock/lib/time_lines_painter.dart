@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:ankit_mahadik_clock/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -10,8 +11,9 @@ class TimeLinesPainter extends CustomPainter {
   final Paint centerPainter;
   final double tick;
   final LineType lineType;
+  final BuildContext context;
 
-  TimeLinesPainter({this.tick, this.lineType})
+  TimeLinesPainter({this.tick, this.lineType, this.context})
       : linePainter = Paint()
           ..color = Colors.black54
           ..style = PaintingStyle.stroke
@@ -34,6 +36,10 @@ class TimeLinesPainter extends CustomPainter {
     final radius = size.width / 2;
 
     canvas.translate(radius, radius);
+    hourPainter.color =
+        Utils().isDarkMode(this.context) ? Color(0xffdbd8e3) : Colors.black;
+    minutePainter.color =
+    Utils().isDarkMode(this.context) ? Color(0xfffbe3b9) : Colors.blueGrey;
 
     switch (lineType) {
       case LineType.hour:
@@ -47,6 +53,8 @@ class TimeLinesPainter extends CustomPainter {
         canvas.drawShadow(_minutePath(radius), Colors.black, 6.0, false);
         break;
       case LineType.meridiem:
+        linePainter.color =
+        Utils().isDarkMode(this.context) ? Color(0xfffbe3b9) : Colors.blueGrey;
         canvas.rotate(2 * pi * tick);
         canvas.drawCircle(Offset(0.0, 0.0), radius / 30, linePainter);
         canvas.drawPath(_secondPath(radius), linePainter);
@@ -60,8 +68,8 @@ class TimeLinesPainter extends CustomPainter {
     return Path()
       ..moveTo(-0.8, -radius / 1.7)
       ..lineTo(-2.5, -radius / 3.5)
-      ..lineTo(-1.0,4.0)
-      ..lineTo(1.0,4.0)
+      ..lineTo(-1.0, 4.0)
+      ..lineTo(1.0, 4.0)
       ..lineTo(2.5, -radius / 3.5)
       ..lineTo(0.8, -radius / 1.7)
       ..close();
@@ -71,7 +79,7 @@ class TimeLinesPainter extends CustomPainter {
     return Path()
       ..moveTo(-1.0, -radius / 1.15)
       ..lineTo(-2.5, -radius / 2.5)
-      ..lineTo(-1.0,3.0)
+      ..lineTo(-1.0, 3.0)
       ..lineTo(1.0, 3.0)
       ..lineTo(2.5, -radius / 2.5)
       ..lineTo(1.0, -radius / 1.15)

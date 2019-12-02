@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:ankit_mahadik_clock/utils.dart';
 import 'package:flutter/material.dart';
 
 typedef ProgressChanged<double> = void Function(double value);
@@ -85,7 +86,8 @@ class _CircleProgressState extends State<CircleProgressSecond>
             ringColor: widget.ringColor,
             dotColor: widget.dotColor,
             dotEdgeColor: widget.dotEdgeColor,
-            progress: _animation.value),
+            progress: _animation.value,
+            context: context),
       ),
     );
   }
@@ -121,6 +123,7 @@ class ProgressPainter extends CustomPainter {
   final Color dotEdgeColor;
   final Color ringColor;
   final double progress;
+  final BuildContext context;
 
   ProgressPainter({
     this.dotRadius,
@@ -130,6 +133,7 @@ class ProgressPainter extends CustomPainter {
     this.dotColor,
     this.dotEdgeColor = const Color(0XFFF5F5FA),
     this.progress,
+    this.context,
   });
 
   @override
@@ -174,7 +178,9 @@ class ProgressPainter extends CustomPainter {
         final Gradient gradient = new SweepGradient(
           endAngle: radians,
           colors: [
-            Colors.white,
+            Utils().isDarkMode(context)
+                ? Colors.white.withOpacity(0.5)
+                : Colors.white,
             currentDotColor,
           ],
         );
