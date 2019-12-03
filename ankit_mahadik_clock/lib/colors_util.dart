@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 class ColorsUtil {
   final clockBGLight = Colors.white;
-  final clockBGDark = Color(0xFF222831);
+  final clockBGDark = Color(0xFF121212);
 
   final shadowColorLight = Colors.black26.withOpacity(0.04);
   final shadowColorDark = Colors.white24.withOpacity(0.04);
 
   final textColorLight = Color(0x80000000);
   final textColorDark = Colors.grey;
+
+  final backgroundColorLight = Colors.white;
+  final backgroundColorDark = Color(0xff262833);
 
   List<Color> getColorsLightArray() {
     return [
@@ -35,19 +38,19 @@ class ColorsUtil {
 
   List<Color> getColorsDarkArray() {
     return [
-      Color(0xFFf67280),
-      Color(0xFFDCFFCC),
-      Color(0xFFFF6464),
-      Color(0xFFEAE7AF),
+      Color(0xFFD84315),
+      Color(0xFFFF1744),
+      Color(0xFF00E676),
+      Color(0xFFD500F9),
       Color(0xFFCA3E47),
       Color(0xFFE14594),
       Color(0xFFA7D129),
-      Color(0xFF4ECCA3),
+      Color(0xFF00BFA5),
       Color(0xFFE16428),
-      Color(0xFFF1BBD5),
+      Color(0xFF2962FF),
       Color(0xFF91BD3A),
       Color(0xFFFFD800),
-      Color(0xFFE08F62),
+      Color(0xFFF57F17),
       Color(0xFF4DD599),
     ];
   }

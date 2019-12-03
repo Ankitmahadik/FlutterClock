@@ -81,11 +81,17 @@ class _AnalogClockState extends State<AnalogClock> {
   @override
   Widget build(BuildContext context) {
     checkThemeMode(context);
-    return Stack(
-      children: <Widget>[
-        buildClockWidget(),
-        buildSecondProgressWidget(),
-      ],
+    return Container(
+      decoration: BoxDecoration(color:
+          Utils().isDarkMode(context)
+          ? ColorsUtil().backgroundColorDark
+          : ColorsUtil().backgroundColorLight),
+      child: Stack(
+        children: <Widget>[
+          buildClockWidget(),
+          buildSecondProgressWidget(),
+        ],
+      ),
     );
   }
 
