@@ -76,18 +76,21 @@ class _CircleProgressState extends State<CircleProgressSecond>
     final size = new Size(width, width);
     return Container(
       alignment: FractionalOffset.center,
-      child: CustomPaint(
-        key: paintKey,
-        size: size,
-        painter: ProgressPainter(
-            dotRadius: widget.dotRadius,
-            shadowWidth: widget.shadowWidth,
-            shadowColor: widget.shadowColor,
-            ringColor: widget.ringColor,
-            dotColor: widget.dotColor,
-            dotEdgeColor: widget.dotEdgeColor,
-            progress: _animation.value,
-            context: context),
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) => CustomPaint(
+          key: paintKey,
+          size: size,
+          painter: ProgressPainter(
+              dotRadius: widget.dotRadius,
+              shadowWidth: widget.shadowWidth,
+              shadowColor: widget.shadowColor,
+              ringColor: widget.ringColor,
+              dotColor: widget.dotColor,
+              dotEdgeColor: widget.dotEdgeColor,
+              progress: _animation.value,
+              context: context),
+        ),
       ),
     );
   }
@@ -106,10 +109,7 @@ class _CircleProgressState extends State<CircleProgressSecond>
         endPos = (endPos > 1.0) ? 0.0167 : endPos;
       }
       _animation =
-          Tween(begin: beginPos, end: endPos).animate(progressController)
-            ..addListener(() {
-              setState(() {});
-            });
+          Tween(begin: beginPos, end: endPos).animate(progressController);
       progressController.forward();
     }
   }

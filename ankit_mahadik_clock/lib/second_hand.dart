@@ -14,7 +14,6 @@ class SecondHand extends StatefulWidget {
 }
 
 class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
-  double _progress;
   Animation<double> _animation;
   AnimationController _controller;
   var sec = DateTime.now().second;
@@ -22,7 +21,6 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _progress = (2 * pi * widget.currentTick);
     animateHand();
   }
 
@@ -37,7 +35,16 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(painter: LinePainter(progress: _progress,context: context));
+    return Container(
+      width: 280,
+      height: 280,
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) => CustomPaint(
+          painter: LinePainter(progress: _animation.value, context: context),
+        ),
+      ),
+    );
   }
 
   void animateHand() {
@@ -51,13 +58,7 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
     }
     _controller = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
-    _animation = Tween(begin: beginPos, end: endPos).animate(_controller)
-      ..addListener(() {
-        setState(() {
-          _progress = _animation.value;
-        });
-      });
-
+    _animation = Tween(begin: beginPos, end: endPos).animate(_controller);
     _controller.forward();
   }
 }
@@ -67,7 +68,7 @@ class LinePainter extends CustomPainter {
   double progress;
   BuildContext context;
 
-  LinePainter({this.progress,this.context}) {
+  LinePainter({this.progress, this.context}) {
     _paint = Paint()
       ..color = Colors.redAccent
       ..style = PaintingStyle.stroke
@@ -80,7 +81,8 @@ class LinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    _centerPainter.color=Utils().isDarkMode(this.context) ? Color(0xfffbe3b9) : Colors.blueGrey;
+    _centerPainter.color =
+        Utils().isDarkMode(this.context) ? Color(0xfffbe3b9) : Colors.blueGrey;
     final radius = size.width / 2;
     canvas.translate(radius, radius);
     canvas.rotate(progress);

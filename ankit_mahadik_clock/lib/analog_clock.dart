@@ -24,24 +24,28 @@ class AnalogClock extends StatefulWidget {
 class _AnalogClockState extends State<AnalogClock> {
   var _now = DateTime.now();
   Timer _timer;
-  double prevTick = 0.0;
-  Color bgColor = Colors.white;
-  Color textColor = Colors.white;
-  Color shadowColor = Colors.black26.withOpacity(0.04);
-  Color currentColor = Color(0xFF6A1B9A);
-  int currentColorIndex = 0;
+  double _prevTick = 0.0;
+  Color _bgColor = Colors.white;
+  Color _textColor = Colors.white;
+  Color _shadowColor = Colors.black26.withOpacity(0.04);
+  Color _currentColor = Color(0xFF6A1B9A);
+  int _currentColorIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+    _setLandscapeMode();
     widget.model.addListener(_updateModel);
     // Set the initial values.
     _updateTime();
     _updateModel();
+  }
+
+  void _setLandscapeMode() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
   }
 
   @override
@@ -66,9 +70,9 @@ class _AnalogClockState extends State<AnalogClock> {
 
   void _updateTime() {
     setState(() {
-      prevTick = _secondPercent();
+      _prevTick = _secondPercent();
       if (_minutesPercent() != (DateTime.now().minute / 60)) {
-        currentColor = _getCurrentColor();
+        _currentColor = _getCurrentColor();
       }
       _now = DateTime.now();
       _timer = Timer(
@@ -82,10 +86,10 @@ class _AnalogClockState extends State<AnalogClock> {
   Widget build(BuildContext context) {
     checkThemeMode(context);
     return Container(
-      decoration: BoxDecoration(color:
-          Utils().isDarkMode(context)
-          ? ColorsUtil().backgroundColorDark
-          : ColorsUtil().backgroundColorLight),
+      decoration: BoxDecoration(
+          color: Utils().isDarkMode(context)
+              ? ColorsUtil().backgroundColorDark
+              : ColorsUtil().backgroundColorLight),
       child: Stack(
         children: <Widget>[
           buildClockWidget(),
@@ -152,7 +156,7 @@ class _AnalogClockState extends State<AnalogClock> {
               "${widget.model.temperature.toStringAsFixed(2)}\n${widget.model.unitString}",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: textColor,
+                  color: _textColor,
                   fontSize: 12.0,
                   fontFamily: 'VarelaRound',
                   fontWeight: FontWeight.bold)),
@@ -178,11 +182,11 @@ class _AnalogClockState extends State<AnalogClock> {
     return Center(
       child: CircleProgressSecond(
         radius: 110.0,
-        dotColor: currentColor,
+        dotColor: _currentColor,
         dotRadius: 3.0,
         shadowWidth: 8.0,
         progress: _secondPercent(),
-        prevProgress: prevTick,
+        prevProgress: _prevTick,
       ),
     );
   }
@@ -193,32 +197,34 @@ class _AnalogClockState extends State<AnalogClock> {
           height: 280,
           width: 280,
           padding: const EdgeInsets.all(8.0),
-          decoration:
-              BoxDecoration(color: bgColor, shape: BoxShape.circle, boxShadow: [
-            BoxShadow(
-                color: shadowColor,
-                blurRadius: 10,
-                offset: const Offset(-12, 0),
-                spreadRadius: 2),
-            BoxShadow(
-                color: shadowColor,
-                blurRadius: 10,
-                offset: const Offset(12, 0),
-                spreadRadius: 5),
-          ]),
+          decoration: BoxDecoration(
+              color: _bgColor,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                    color: _shadowColor,
+                    blurRadius: 10,
+                    offset: const Offset(-12, 0),
+                    spreadRadius: 2),
+                BoxShadow(
+                    color: _shadowColor,
+                    blurRadius: 10,
+                    offset: const Offset(12, 0),
+                    spreadRadius: 5),
+              ]),
           child: Container(
             width: 280,
             height: 280,
             child: CustomPaint(
-              painter: LinesPainter(currentColor, DialLineType.clock),
+              painter: LinesPainter(_currentColor, DialLineType.clock),
               child: Container(
                 margin: const EdgeInsets.all(23.0),
                 decoration: BoxDecoration(
-                    color: bgColor,
+                    color: _bgColor,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                          color: shadowColor, blurRadius: 5, spreadRadius: 8),
+                          color: _shadowColor, blurRadius: 5, spreadRadius: 8),
                     ]),
                 child: Stack(
                   children: <Widget>[
@@ -238,11 +244,7 @@ class _AnalogClockState extends State<AnalogClock> {
   }
 
   Widget _buildSecondHandWidget() {
-    return Container(
-      width: 280,
-      height: 280,
-      child: SecondHand(currentTick: _secondPercent(), prevTick: prevTick),
-    );
+    return SecondHand(currentTick: _secondPercent(), prevTick: _prevTick);
   }
 
   Widget _buildHourMinuteHandWidget() {
@@ -269,12 +271,12 @@ class _AnalogClockState extends State<AnalogClock> {
     List<Color> array = Utils().isDarkMode(context)
         ? ColorsUtil().getColorsDarkArray()
         : ColorsUtil().getColorsLightArray();
-    if (currentColorIndex < array.length - 1) {
-      currentColorIndex++;
+    if (_currentColorIndex < array.length - 1) {
+      _currentColorIndex++;
     } else {
-      currentColorIndex = 0;
+      _currentColorIndex = 0;
     }
-    return array[currentColorIndex];
+    return array[_currentColorIndex];
   }
 
   double _secondPercent() => _now.second / 60;
@@ -289,13 +291,13 @@ class _AnalogClockState extends State<AnalogClock> {
 
   void checkThemeMode(BuildContext context) {
     if (Utils().isDarkMode(context)) {
-      bgColor = ColorsUtil().clockBGDark;
-      shadowColor = ColorsUtil().shadowColorDark;
-      textColor = ColorsUtil().textColorDark;
+      _bgColor = ColorsUtil().clockBGDark;
+      _shadowColor = ColorsUtil().shadowColorDark;
+      _textColor = ColorsUtil().textColorDark;
     } else {
-      bgColor = ColorsUtil().clockBGLight;
-      shadowColor = ColorsUtil().shadowColorLight;
-      textColor = ColorsUtil().textColorLight;
+      _bgColor = ColorsUtil().clockBGLight;
+      _shadowColor = ColorsUtil().shadowColorLight;
+      _textColor = ColorsUtil().textColorLight;
     }
   }
 }
