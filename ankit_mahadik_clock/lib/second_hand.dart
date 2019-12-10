@@ -61,12 +61,18 @@ class _SecondHandState extends State<SecondHand> with TickerProviderStateMixin {
     _animation = Tween(begin: beginPos, end: endPos).animate(_controller);
     _controller.forward();
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
 
 class LinePainter extends CustomPainter {
   Paint _paint, _centerPainter;
-  double progress;
-  BuildContext context;
+  final double progress;
+  final BuildContext context;
 
   LinePainter({this.progress, this.context}) {
     _paint = Paint()

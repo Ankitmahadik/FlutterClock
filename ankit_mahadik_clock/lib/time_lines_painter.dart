@@ -94,7 +94,9 @@ class TimeLinesPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(TimeLinesPainter oldDelegate) {
+    return oldDelegate.tick != tick;
+  }
 }
 
 enum LineType { hour, minute, meridiem }
