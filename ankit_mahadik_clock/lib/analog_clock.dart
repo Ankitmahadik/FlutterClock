@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:ankit_mahadik_clock/circle_border_widget.dart';
 import 'package:ankit_mahadik_clock/circle_progress_second.dart';
+import 'package:ankit_mahadik_clock/clock_hands.dart';
 import 'package:ankit_mahadik_clock/colors_util.dart';
 import 'package:ankit_mahadik_clock/date_text_helper.dart';
 import 'package:ankit_mahadik_clock/lines_painter.dart';
-import 'package:ankit_mahadik_clock/second_hand.dart';
-import 'package:ankit_mahadik_clock/time_lines_painter.dart';
+import 'package:ankit_mahadik_clock/meridiem_hand_painter.dart';
 import 'package:ankit_mahadik_clock/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -133,10 +133,7 @@ class _AnalogClockState extends State<AnalogClock> {
         child: CustomPaint(
           painter: LinesPainter(Color(0xFF64B5F6), DialLineType.meridiem),
           child: CustomPaint(
-            painter: TimeLinesPainter(
-                lineType: LineType.meridiem,
-                tick: _hoursMeridiem(),
-                context: context),
+            painter: MeridiemHandPainter(tick: _hoursMeridiem(), context: context),
           ),
         ),
       ),
@@ -233,7 +230,6 @@ class _AnalogClockState extends State<AnalogClock> {
                     _buildDateBorderWidget(),
                     _buildDateWidget(),
                     _buildMeridiemDialWidget(),
-                    _buildHourMinuteHandWidget(),
                     _buildSecondHandWidget(),
                   ],
                 ),
@@ -244,27 +240,7 @@ class _AnalogClockState extends State<AnalogClock> {
   }
 
   Widget _buildSecondHandWidget() {
-    return SecondHand(currentTick: _secondPercent(), prevTick: _prevTick);
-  }
-
-  Widget _buildHourMinuteHandWidget() {
-    return Container(
-      width: 280,
-      height: 280,
-      child: CustomPaint(
-        painter: TimeLinesPainter(
-          lineType: LineType.hour,
-          tick: _hoursPercent(),
-          context: context,
-        ),
-        child: CustomPaint(
-          painter: TimeLinesPainter(
-              lineType: LineType.minute,
-              tick: _minutesPercent(),
-              context: context),
-        ),
-      ),
-    );
+    return ClockHands(currentTick: _secondPercent(), prevTick: _prevTick);
   }
 
   Color _getCurrentColor() {
@@ -282,8 +258,6 @@ class _AnalogClockState extends State<AnalogClock> {
   double _secondPercent() => _now.second / 60;
 
   double _minutesPercent() => _now.minute / 60;
-
-  double _hoursPercent() => _now.hour / 12;
 
   double _hoursMeridiem() {
     return _now.hour / 24;
