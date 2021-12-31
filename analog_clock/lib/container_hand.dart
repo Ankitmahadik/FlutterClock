@@ -16,10 +16,10 @@ class ContainerHand extends Hand {
   ///
   /// All of the parameters are required and must not be null.
   const ContainerHand({
-    @required Color color,
-    @required double size,
-    @required double angleRadians,
-    this.child,
+   required Color color,
+    required double size,
+    required double angleRadians,
+    required this.child,
   })  : assert(size != null),
         assert(angleRadians != null),
         super(

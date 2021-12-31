@@ -10,7 +10,7 @@ class MeridiemHandPainter extends CustomPainter {
   final double tick;
   final BuildContext context;
 
-  MeridiemHandPainter({this.tick, this.context})
+  MeridiemHandPainter({required this.tick,required  this.context})
       : linePainter = Paint()
           ..color = Colors.black54
           ..style = PaintingStyle.stroke

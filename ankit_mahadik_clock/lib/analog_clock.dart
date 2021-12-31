@@ -23,7 +23,7 @@ class AnalogClock extends StatefulWidget {
 
 class _AnalogClockState extends State<AnalogClock> {
   var _now = DateTime.now();
-  Timer _timer;
+  late Timer _timer;
   double _prevTick = 0.0;
   Color _bgColor = Colors.white;
   Color _textColor = Colors.white;
@@ -59,7 +59,7 @@ class _AnalogClockState extends State<AnalogClock> {
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _timer.cancel();
     widget.model.removeListener(_updateModel);
     super.dispose();
   }

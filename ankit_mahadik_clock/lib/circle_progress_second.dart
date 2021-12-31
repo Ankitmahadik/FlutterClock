@@ -11,8 +11,8 @@ num radToDeg(num rad) => rad * (180.0 / pi);
 
 class CircleProgressSecond extends StatefulWidget {
   final double radius;
-  final double progress;
-  final double prevProgress;
+  final double? progress;
+  final double? prevProgress;
 
   final double dotRadius;
   final double shadowWidth;
@@ -21,13 +21,13 @@ class CircleProgressSecond extends StatefulWidget {
   final Color dotEdgeColor;
   final Color ringColor;
 
-  final ProgressChanged progressChanged;
+  final ProgressChanged? progressChanged;
 
   const CircleProgressSecond(
-      {Key key,
-      @required this.radius,
-      @required this.dotRadius,
-      @required this.dotColor,
+      {  Key? key,
+      required this.radius,
+      required this.dotRadius,
+      required this.dotColor,
       this.shadowWidth = 2.0,
       this.shadowColor = Colors.black12,
       this.ringColor = const Color(0XFFFFFF),
@@ -43,8 +43,8 @@ class CircleProgressSecond extends StatefulWidget {
 
 class _CircleProgressState extends State<CircleProgressSecond>
     with TickerProviderStateMixin {
-  AnimationController progressController;
-  Animation<double> _animation;
+  late AnimationController progressController;
+  late Animation<double> _animation;
   bool isValidTouch = false;
   final GlobalKey paintKey = GlobalKey();
   var sec = DateTime.now().second;
@@ -100,12 +100,12 @@ class _CircleProgressState extends State<CircleProgressSecond>
         duration: Duration(milliseconds: 1000), vsync: this);
     if (widget.progress != null) {
       //Extra value added to match speed
-      var beginPos = widget.prevProgress + 0.0167;
-      var endPos = widget.progress + 0.0167;
+      var beginPos = widget.prevProgress! + 0.0167;
+      var endPos = widget.progress! + 0.0167;
       if (beginPos > endPos) {
         //Extra value added to Switch last animation smoothly on minute change
         beginPos = (beginPos > 1.0) ? 0.0 : beginPos;
-        endPos = (widget.prevProgress + 0.0167) + 0.016;
+        endPos = (widget.prevProgress! + 0.0167) + 0.016;
         endPos = (endPos > 1.0) ? 0.0167 : endPos;
       }
       _animation =
@@ -116,14 +116,14 @@ class _CircleProgressState extends State<CircleProgressSecond>
 }
 
 class ProgressPainter extends CustomPainter {
-  final double dotRadius;
+  final double? dotRadius;
   final double shadowWidth;
   final Color shadowColor;
-  final Color dotColor;
+  final Color? dotColor;
   final Color dotEdgeColor;
   final Color ringColor;
-  final double progress;
-  final BuildContext context;
+  final double? progress;
+  final BuildContext? context;
 
   ProgressPainter({
     this.dotRadius,
@@ -140,13 +140,13 @@ class ProgressPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final double center = size.width * 0.5;
     final Offset offsetCenter = Offset(center, center);
-    final double drawRadius = size.width * 0.5 - dotRadius;
-    final angle = 360.0 * progress;
-    final double radians = degToRad(angle);
+    final double drawRadius = size.width * 0.5 - dotRadius!;
+    final angle = 360.0 * progress!;
+    final double radians = degToRad(angle).toDouble();
 
-    final double radiusOffset = dotRadius * 0.4;
+    final double radiusOffset = dotRadius! * 0.4;
     final double outerRadius = center - radiusOffset;
-    final double innerRadius = center - dotRadius * 2 + radiusOffset;
+    final double innerRadius = center - dotRadius! * 2 + radiusOffset;
 
     Path path = Path.combine(
         PathOperation.difference,
@@ -165,20 +165,20 @@ class ProgressPainter extends CustomPainter {
     canvas.drawCircle(offsetCenter, drawRadius, ringPaint);
 
     final Color currentDotColor = Color.alphaBlend(
-        dotColor.withOpacity(0.7 + (0.3 * progress)), Colors.white);
+        dotColor!.withOpacity(0.7 + (0.3 * progress!)), Colors.white);
 
     // draw progress.
-    if (progress > 0.0) {
+    if (progress! > 0.0) {
       final progressWidth = outerRadius - innerRadius + radiusOffset;
       final double offset = asin(progressWidth * 0.5 / drawRadius);
       if (radians > offset) {
         canvas.save();
         canvas.translate(0.0, size.width);
-        canvas.rotate(degToRad(-90.0));
+        canvas.rotate(degToRad(-90.0).toDouble());
         final Gradient gradient = new SweepGradient(
           endAngle: radians,
           colors: [
-            Utils().isDarkMode(context)
+            Utils().isDarkMode(context!)
                 ? Colors.white.withOpacity(0.5)
                 : Colors.white,
             currentDotColor,
@@ -200,12 +200,12 @@ class ProgressPainter extends CustomPainter {
     final double dx = center + drawRadius * sin(radians);
     final double dy = center - drawRadius * cos(radians);
     final dotPaint = Paint()..color = currentDotColor;
-    canvas.drawCircle(new Offset(dx, dy), dotRadius, dotPaint);
+    canvas.drawCircle(new Offset(dx, dy), dotRadius!, dotPaint);
     dotPaint
       ..color = dotEdgeColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = dotRadius * 0.3;
-    canvas.drawCircle(new Offset(dx, dy), dotRadius, dotPaint);
+      ..strokeWidth = dotRadius! * 0.3;
+    canvas.drawCircle(new Offset(dx, dy), dotRadius!, dotPaint);
   }
 
   @override

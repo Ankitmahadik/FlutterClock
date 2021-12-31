@@ -7,21 +7,21 @@ class ClockHands extends StatefulWidget {
   final double currentTick;
   final double prevTick;
 
-  ClockHands({this.currentTick, this.prevTick});
+  ClockHands({required this.currentTick, required this.prevTick});
 
   @override
   State<StatefulWidget> createState() => _ClockHandsState();
 }
 
 class _ClockHandsState extends State<ClockHands> with TickerProviderStateMixin {
-  Animation<double> _animation;
-  AnimationController _controller;
+  late Animation<double> _animation;
+  late AnimationController _controller;
   var sec = DateTime.now().second;
 
   static const double MINUTES_IN_HOUR = 60.0;
   static const double SECONDS_IN_MINUTE = 60.0;
   static const double HOURS_IN_CLOCK = 12.0;
-  double seconds, minutes, hour;
+  late double seconds, minutes, hour;
 
   @override
   void initState() {
@@ -85,7 +85,7 @@ class _ClockHandsState extends State<ClockHands> with TickerProviderStateMixin {
 }
 
 class LinePainter extends CustomPainter {
-  Paint _paint, _centerPainter, hourPainter, minutePainter;
+  late Paint _paint, _centerPainter, hourPainter, minutePainter;
   final double progress;
   final BuildContext context;
 
@@ -99,7 +99,11 @@ class LinePainter extends CustomPainter {
   static const double STROKE_WIDTH = 3.0;
 
   LinePainter(
-      {this.progress, this.context, this.seconds, this.minutes, this.hour}) {
+      {required this.progress,
+      required this.context,
+      required this.seconds,
+      required this.minutes,
+      required this.hour}) {
     _paint = Paint()
       ..color = Colors.redAccent
       ..style = PaintingStyle.stroke

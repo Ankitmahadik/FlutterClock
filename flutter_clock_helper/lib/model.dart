@@ -2,8 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 /// This is the model that contains the customization options for the clock.
 ///
@@ -13,7 +12,7 @@ import 'package:flutter/material.dart';
 ///
 /// Contestants: Do not edit this.
 class ClockModel extends ChangeNotifier {
-  get is24HourFormat => _is24HourFormat;
+  bool get is24HourFormat => _is24HourFormat;
   bool _is24HourFormat = true;
   set is24HourFormat(bool is24HourFormat) {
     if (_is24HourFormat != is24HourFormat) {
@@ -23,7 +22,7 @@ class ClockModel extends ChangeNotifier {
   }
 
   /// Current location String, for example 'Mountain View, CA'.
-  get location => _location;
+  String get location => _location;
   String _location = 'Mountain View, CA';
   set location(String location) {
     if (location != _location) {
@@ -33,7 +32,7 @@ class ClockModel extends ChangeNotifier {
   }
 
   /// Current temperature string, for example '22°C'.
-  get temperature => _convertFromCelsius(_temperature);
+  num get temperature => _convertFromCelsius(_temperature);
   // Stored in degrees celsius, and converted based on the current unit setting
   num _temperature = 22.0;
   set temperature(num temperature) {
@@ -47,7 +46,7 @@ class ClockModel extends ChangeNotifier {
   }
 
   /// Daily high temperature, for example '26'.
-  get high => _convertFromCelsius(_high);
+  num get high => _convertFromCelsius(_high);
   // Stored in degrees celsius, and converted based on the current unit setting
   num _high = 26.0;
   set high(num high) {
@@ -59,7 +58,7 @@ class ClockModel extends ChangeNotifier {
   }
 
   /// Daily low temperature, for example '19'.
-  get low => _convertFromCelsius(_low);
+  num get low => _convertFromCelsius(_low);
   num _low = 19.0;
   set low(num low) {
     low = _convertToCelsius(low);

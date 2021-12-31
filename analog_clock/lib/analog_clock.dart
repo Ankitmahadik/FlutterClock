@@ -38,7 +38,7 @@ class _AnalogClockState extends State<AnalogClock> {
   var _temperatureRange = '';
   var _condition = '';
   var _location = '';
-  Timer _timer;
+  late Timer _timer;
 
   @override
   void initState() {
